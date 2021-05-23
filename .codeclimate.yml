@@ -1,0 +1,16 @@
+version: "2"
+
+checks:
+  similar-code:
+    enabled: true
+    config:
+      threshold: 75
+
+exclude_patterns:
+  - "dist/"
+  - "**/node_modules/"
+  - "**/*.spec/"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/*.e2e.ts"
+  - "**/*.d.ts"

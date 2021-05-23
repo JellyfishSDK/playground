@@ -1,0 +1,37 @@
+version: v1
+
+labels:
+  - label: area/workflow
+    sync: true
+    matcher:
+      files: ".github/**"
+
+  - label: area/playground
+    sync: true
+    matcher:
+      files: "packages/playground/**"
+
+  - label: area/playground-api-client
+    sync: true
+    matcher:
+      files: "packages/playground-api-client/**"
+
+  - label: area/module-api
+    sync: true
+    matcher:
+      files: "src/module.api/**"
+
+  - label: area/module-defid
+    sync: true
+    matcher:
+      files: "src/module.defid/**"
+
+  - label: area/module-health
+    sync: true
+    matcher:
+      files: "src/module.health/**"
+
+  - label: area/module-setup
+    sync: true
+    matcher:
+      files: "src/module.setup/**"
