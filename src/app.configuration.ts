@@ -9,9 +9,6 @@ export const AppConfiguration = (): any => ({
     url: process.env.PLAYGROUND_DEFID_URL,
     liveness: {
       maxBlockCount: 100000
-    },
-    readiness: {
-      minBlockCount: 200
     }
   }
 })

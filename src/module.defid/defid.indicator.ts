@@ -4,14 +4,12 @@ import { ProbeIndicator, HealthIndicatorResult } from '@src/module.health/probe.
 import { ConfigService } from '@nestjs/config'
 
 @Injectable()
-export class DeFiDHealthIndicator extends ProbeIndicator {
+export class DeFiDProbeIndicator extends ProbeIndicator {
   private readonly livenessMaxBlockCount: number
-  private readonly readinessMinBlockCount: number
 
   constructor (private readonly client: JsonRpcClient, private readonly configService: ConfigService) {
     super()
     this.livenessMaxBlockCount = configService.get<number>('defid.liveness.maxBlockCount', 100000)
-    this.readinessMinBlockCount = configService.get<number>('defid.readiness.minBlockCount', 200)
   }
 
   async liveness (): Promise<HealthIndicatorResult> {
@@ -31,11 +29,6 @@ export class DeFiDHealthIndicator extends ProbeIndicator {
    * Check the readiness of DeFiD.
    */
   async readiness (): Promise<HealthIndicatorResult> {
-    const count = await this.client.blockchain.getBlockCount()
-    if (count >= this.readinessMinBlockCount) {
-      return this.withAlive('defid')
-    }
-
-    return this.withDead('defid', `playground block count is not greater than ${this.readinessMinBlockCount} yet`)
+    return this.withAlive('defid')
   }
 }
