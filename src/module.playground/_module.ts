@@ -28,12 +28,32 @@ export class PlaygroundModule implements OnApplicationBootstrap {
   }
 
   async onApplicationBootstrap (): Promise<void> {
-    await this.client.wallet.createWallet('coinbase')
+    await this.waitForDeFiD()
     await this.client.call('importprivkey', [Playground.MN_KEY.owner.privKey, 'coinbase'], 'number')
     await this.client.call('importprivkey', [Playground.MN_KEY.operator.privKey, 'coinbase'], 'number')
 
     await this.token.init()
     await this.dex.init()
     this.indicator.ready = true
+  }
+
+  async waitForDeFiD (timeout = 15000): Promise<void> {
+    const expiredAt = Date.now() + timeout
+
+    return await new Promise((resolve, reject) => {
+      const loop = (): void => {
+        this.client.blockchain.getBlockCount().then(() => {
+          resolve()
+        }).catch(err => {
+          if (expiredAt < Date.now()) {
+            reject(new Error(`DeFiD not ready within given timeout of ${timeout}ms.\n${err.message as string}`))
+          } else {
+            setTimeout(() => loop(), 200)
+          }
+        })
+      }
+
+      loop()
+    })
   }
 }
