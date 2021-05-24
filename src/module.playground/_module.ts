@@ -1,7 +1,7 @@
 import { Global, Module, OnApplicationBootstrap } from '@nestjs/common'
 import { PlaygroundToken } from '@src/module.playground/playground.token'
 import { PlaygroundDex } from '@src/module.playground/playground.dex'
-import { PlaygroundProbeIndicator } from '@src/module.playground/_indicator'
+import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { PlaygroundBlock } from '@src/module.playground/playground.block'
 import { Playground } from '@src/module.playground/playground'

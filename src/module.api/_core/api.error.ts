@@ -64,17 +64,6 @@ export class ApiException extends HttpException {
   }
 }
 
-export class NotFoundApiException extends ApiException {
-  constructor (message?: string) {
-    super({
-      code: HttpStatus.NOT_FOUND,
-      type: ApiErrorType.NotFound,
-      at: Date.now(),
-      message: message
-    })
-  }
-}
-
 export class BadRequestApiException extends ApiException {
   constructor (message?: string) {
     super({

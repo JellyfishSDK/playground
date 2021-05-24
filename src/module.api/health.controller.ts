@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { HealthCheck, HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
 import { DeFiDProbeIndicator } from '@src/module.defid/defid.indicator'
-import { PlaygroundProbeIndicator } from '@src/module.playground/_indicator'
+import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
 
 @Controller('/_health')
 export class HealthController {
