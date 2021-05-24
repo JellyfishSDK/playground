@@ -1,0 +1,54 @@
+# IDE - IntelliJ
+.idea/*
+!.idea/inspectionProfiles/
+!.idea/dictionaries/
+!.idea/codeStyles/
+!.idea/modules.xml
+!.idea/*.iml
+!.idea/README.md
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+parcel-bundle-reports
+
+# node_modules
+node_modules
+
+# dist & pack
+dist
+*.tgz
+
+# Tests
+/coverage
+/.nyc_output
+
+# OS
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Level
+.level

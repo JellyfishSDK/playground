@@ -1,0 +1,26 @@
+# Define individuals that are responsible for code in a repository.
+# More details are here: https://help.github.com/articles/about-codeowners/
+
+/.github/                                       @fuxingloh
+/.husky/                                        @fuxingloh
+/.idea/                                         @fuxingloh
+
+/packages/                                      @fuxingloh
+/packages/playground/                           @fuxingloh
+/packages/playground-api-client/                @fuxingloh
+
+/src/                                           @fuxingloh
+/src/module.api/                                @fuxingloh
+/src/module.defid/                              @fuxingloh
+/src/module.health/                             @fuxingloh
+/src/module.playground/                         @fuxingloh
+
+lerna.json                                      @fuxingloh
+tsconfig.json                                   @fuxingloh
+jest.config.js                                  @fuxingloh
+package.json                                    @fuxingloh
+package-lock.json                               @fuxingloh
+
+CONTRIBUTING.md                                 @fuxingloh
+README.md                                       @fuxingloh
+LICENSE                                         @fuxingloh
