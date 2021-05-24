@@ -26,16 +26,10 @@ afterAll(async () => {
   }
 })
 
-it('should throw error for non whitelisted method', async () => {
-  await expect(
-    client.rpc.call('getbalance', [], 'number')
-  ).rejects.toThrow('403 - Forbidden (/v1/regtest/rpc/getbalance): RPC method not whitelisted')
-})
-
 it('should throw error on invalid params', async () => {
   await expect(
     client.rpc.call('getblock', [{ block: 1 }], 'number')
-  ).rejects.toThrow('400 - BadRequest (/v1/regtest/rpc/getblock): RpcApiError: \'JSON value is not a string as expected\', code: -1')
+  ).rejects.toThrow('400 - BadRequest (/v1/rpc/getblock): RpcApiError: \'JSON value is not a string as expected\', code: -1, method: getblock')
 })
 
 describe('whitelisted rpc methods', () => {

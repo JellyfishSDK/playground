@@ -25,12 +25,6 @@ afterAll(async () => {
   }
 })
 
-it('should not be able to access wallet', async () => {
-  return await expect(async () => {
-    await client.wallet.getBalance()
-  }).rejects.toThrow('PlaygroundRpcClient: wallet.getBalance not enabled in PlaygroundApiClient')
-})
-
 describe('whitelisted rpc methods', () => {
   it('should client.blockchain.getBlockchainInfo()', async () => {
     const info = await client.blockchain.getBlockchainInfo()
