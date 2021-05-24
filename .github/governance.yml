@@ -37,7 +37,7 @@ issue:
         - module-api
         - module-defid
         - module-health
-        - module-setup
+        - module-playground
       multiple: true
       needs:
         comment: |

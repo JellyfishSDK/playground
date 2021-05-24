@@ -31,7 +31,7 @@ labels:
     matcher:
       files: "src/module.health/**"
 
-  - label: area/module-setup
+  - label: area/module-playground
     sync: true
     matcher:
-      files: "src/module.setup/**"
+      files: "src/module.playground/**"

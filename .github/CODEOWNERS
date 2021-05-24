@@ -13,7 +13,7 @@
 /src/module.api/                                @fuxingloh
 /src/module.defid/                              @fuxingloh
 /src/module.health/                             @fuxingloh
-/src/module.setup/                              @fuxingloh
+/src/module.playground/                         @fuxingloh
 
 lerna.json                                      @fuxingloh
 tsconfig.json                                   @fuxingloh

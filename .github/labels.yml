@@ -65,7 +65,7 @@
 - color: fbca04
   name: area/module-health
 - color: fbca04
-  name: area/module-setup
+  name: area/module-playground
 
 # Priority
 - color: d93f0b
