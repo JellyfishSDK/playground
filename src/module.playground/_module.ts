@@ -28,8 +28,9 @@ export class PlaygroundModule implements OnApplicationBootstrap {
   }
 
   async onApplicationBootstrap (): Promise<void> {
-    await this.client.call('importprivkey', [Playground.MN_KEY.owner.privKey], 'number')
-    await this.client.call('importprivkey', [Playground.MN_KEY.operator.privKey], 'number')
+    await this.client.wallet.createWallet('coinbase')
+    await this.client.call('importprivkey', [Playground.MN_KEY.owner.privKey, 'coinbase'], 'number')
+    await this.client.call('importprivkey', [Playground.MN_KEY.operator.privKey, 'coinbase'], 'number')
 
     await this.token.init()
     await this.dex.init()
