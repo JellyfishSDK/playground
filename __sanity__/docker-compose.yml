@@ -12,6 +12,7 @@ services:
       -rpcbind=0.0.0.0
       -rpcuser=playground-rpcuser
       -rpcpassword=playground-rpcpassword
+      -masternode_operator=mswsMVsyGMj1FzDMbbxw2QW3KvQAv2FKiy
       -regtest=1
       -txnotokens=0
       -logtimemicros
@@ -41,4 +42,4 @@ services:
     depends_on:
       - defi-blockchain
     environment:
-      WHALE_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
+      PLAYGROUND_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554

@@ -58,7 +58,7 @@ class TestConfigService extends ConfigService {
       defid: {
         url: rpcUrl,
         liveness: {
-          maxBlockCount: 10000
+          maxBlockCount: 1000
         },
         readiness: {
           minBlockCount: 200
