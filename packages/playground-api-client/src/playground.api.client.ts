@@ -27,7 +27,7 @@ export interface PlaygroundApiClientOptions {
  * PlaygroundApiClient default options
  */
 export const DefaultOptions: PlaygroundApiClientOptions = {
-  url: 'https://playground.ocean.defichain.com',
+  url: 'https://ocean.defichain.com',
   timeout: 60000,
   version: 'v1'
 }
@@ -128,7 +128,7 @@ export class PlaygroundApiClient {
    */
   async requestAsString (method: Method, path: string, body?: string): Promise<ResponseAsString> {
     const { url: urlString, version, timeout } = this.options
-    const url = `${urlString}/${version as string}/${path}`
+    const url = `${urlString}/${version as string}/playground/${path}`
 
     const controller = new AbortController()
     const id = setTimeout(() => controller.abort(), timeout)
