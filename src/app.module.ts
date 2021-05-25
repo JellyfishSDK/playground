@@ -7,6 +7,7 @@ import { AppConfiguration } from '@src/app.configuration'
 import { ApiModule } from '@src/module.api/_module'
 import { DeFiDModule } from '@src/module.defid/_module'
 import { HealthModule } from '@src/module.health/_module'
+import { PlaygroundModule } from '@src/module.playground/_module'
 
 @Module({})
 export class AppModule {
@@ -19,9 +20,10 @@ export class AppModule {
           load: [AppConfiguration]
         }),
         ScheduleModule.forRoot(),
+        ApiModule,
         DeFiDModule,
         HealthModule,
-        ApiModule
+        PlaygroundModule
       ]
     }
   }

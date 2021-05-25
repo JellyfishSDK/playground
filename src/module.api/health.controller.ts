@@ -1,12 +1,14 @@
 import { Controller, Get } from '@nestjs/common'
 import { HealthCheck, HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
-import { DeFiDHealthIndicator } from '@src/module.defid/defid.indicator'
+import { DeFiDProbeIndicator } from '@src/module.defid/defid.indicator'
+import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
 
 @Controller('/_health')
 export class HealthController {
   constructor (
     private readonly health: HealthCheckService,
-    private readonly defid: DeFiDHealthIndicator) {
+    private readonly defid: DeFiDProbeIndicator,
+    private readonly playground: PlaygroundProbeIndicator) {
   }
 
   /**
@@ -18,7 +20,8 @@ export class HealthController {
   @HealthCheck()
   async liveness (): Promise<HealthCheckResult> {
     return await this.health.check([
-      async () => await this.defid.liveness()
+      async () => await this.defid.liveness(),
+      async () => await this.playground.liveness()
     ])
   }
 
@@ -31,7 +34,8 @@ export class HealthController {
   @HealthCheck()
   async readiness (): Promise<HealthCheckResult> {
     return await this.health.check([
-      async () => await this.defid.readiness()
+      async () => await this.defid.readiness(),
+      async () => await this.playground.readiness()
     ])
   }
 }

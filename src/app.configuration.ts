@@ -6,12 +6,10 @@
  */
 export const AppConfiguration = (): any => ({
   defid: {
-    url: process.env.PLAYGROUND_DEFID_URL,
-    liveness: {
-      maxBlockCount: 100000
-    },
-    readiness: {
-      minBlockCount: 200
-    }
+    url: process.env.PLAYGROUND_DEFID_URL
+  },
+  playground: {
+    // Playground alive till max block count
+    maxBlockCount: 20 * 60 * 24 // 1 day
   }
 })

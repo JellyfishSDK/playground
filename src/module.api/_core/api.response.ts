@@ -1,4 +1,3 @@
-import { ApiPage } from '@src/module.api/_core/api.paged.response'
 import { ApiError } from '@src/module.api/_core/api.error'
 
 /**
@@ -6,6 +5,5 @@ import { ApiError } from '@src/module.api/_core/api.error'
  */
 export interface ApiResponse {
   data?: any
-  page?: ApiPage
   error?: ApiError
 }
