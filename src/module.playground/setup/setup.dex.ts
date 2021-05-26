@@ -88,16 +88,20 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
     return await super.before(list)
   }
 
-  async has (each: PoolPairSetup): Promise<boolean> {
-    const result = await this.client.poolpair.getPoolPair(each.symbol)
-    return Object.values(result).length >= 1
-  }
-
   async create (each: PoolPairSetup): Promise<void> {
     await this.client.poolpair.createPoolPair(each.create)
     await this.generate(1)
 
     await this.client.poolpair.addPoolLiquidity(each.add, PlaygroundSetup.address)
     await this.generate(1)
+  }
+
+  async has (each: PoolPairSetup): Promise<boolean> {
+    try {
+      await this.client.poolpair.getPoolPair(each.symbol)
+      return true
+    } catch (e) {
+      return false
+    }
   }
 }

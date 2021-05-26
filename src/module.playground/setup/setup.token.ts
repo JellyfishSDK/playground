@@ -68,7 +68,11 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
   }
 
   async has (each: TokenSetup): Promise<boolean> {
-    const result = await this.client.token.getToken(each.create.symbol)
-    return Object.values(result).length >= 1
+    try {
+      await this.client.token.getToken(each.create.symbol)
+      return true
+    } catch (e) {
+      return false
+    }
   }
 }
