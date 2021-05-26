@@ -62,6 +62,7 @@ services:
       - "traefik.http.routers.whale.priority=1"
       - "traefik.http.routers.whale.rule=PathPrefix(`/{version:v[1-9]}/playground/`)"
       - "traefik.http.routers.whale.entrypoints=web"
+      - "traefik.http.services.whale.loadbalancer.server.port=3000"
 
   defi-playground:
     image: ghcr.io/defich/playground:latest
@@ -73,6 +74,7 @@ services:
       - "traefik.http.routers.playground.priority=0"
       - "traefik.http.routers.playground.rule=PathPrefix(`/{version:v[1-9]}/playground/rpc/`)"
       - "traefik.http.routers.playground.entrypoints=web"
+      - "traefik.http.services.playground.loadbalancer.server.port=3000"
 ```
 
 ## Developing & Contributing
