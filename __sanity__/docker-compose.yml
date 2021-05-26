@@ -7,9 +7,12 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:3000"
+      - "--entrypoints.ping.address=:8082"
+      - "--ping.entryPoint=ping"
     ports:
       - "3000:3000"
       - "8080:8080"
+      - "8082:8082"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
@@ -40,6 +43,8 @@ services:
     image: ghcr.io/defich/whale:latest
     depends_on:
       - defi-blockchain
+    ports:
+      - "3001:3000"
     environment:
       WHALE_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
       WHALE_DATABASE_PROVIDER: memory
@@ -55,6 +60,8 @@ services:
     image: ghcr.io/defich/playground:latest
     depends_on:
       - defi-blockchain
+    ports:
+      - "3002:3000"
     environment:
       PLAYGROUND_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
     labels:
