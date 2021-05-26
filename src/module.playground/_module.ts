@@ -1,4 +1,4 @@
-import { Global, Module, OnApplicationBootstrap } from '@nestjs/common'
+import { Global, Logger, Module, OnApplicationBootstrap } from '@nestjs/common'
 import { SetupToken } from '@src/module.playground/setup/setup.token'
 import { SetupDex } from '@src/module.playground/setup/setup.dex'
 import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
@@ -19,6 +19,8 @@ import { PlaygroundSetup } from '@src/module.playground/setup/setup'
   ]
 })
 export class PlaygroundModule implements OnApplicationBootstrap {
+  private readonly logger = new Logger(PlaygroundModule.name)
+
   private readonly setups: Array<PlaygroundSetup<any>>
 
   constructor (
@@ -34,6 +36,8 @@ export class PlaygroundModule implements OnApplicationBootstrap {
 
   async onApplicationBootstrap (): Promise<void> {
     await this.waitForDeFiD()
+
+    this.logger.log('setup started')
     await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'coinbase'], 'number')
     await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'coinbase'], 'number')
 
@@ -41,6 +45,7 @@ export class PlaygroundModule implements OnApplicationBootstrap {
       await setup.setup()
     }
 
+    this.logger.log('setup completed')
     this.indicator.ready = true
   }
 

@@ -1,5 +1,5 @@
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 
 @Injectable()
 export abstract class PlaygroundSetup<Each> {
@@ -20,6 +20,8 @@ export abstract class PlaygroundSetup<Each> {
   static get address (): string {
     return PlaygroundSetup.MN_KEY.operator.address
   }
+
+  private readonly logger = new Logger(PlaygroundSetup.name)
 
   constructor (protected readonly client: JsonRpcClient) {
   }
@@ -76,6 +78,7 @@ export abstract class PlaygroundSetup<Each> {
     let current = await this.client.blockchain.getBlockCount()
     const target = current + count
     while (current < target) {
+      this.logger.log(`current block: ${current}, generate +${count} block`)
       await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
       current = await this.client.blockchain.getBlockCount()
     }
@@ -87,6 +90,7 @@ export abstract class PlaygroundSetup<Each> {
   protected async waitForBalance (balance: number): Promise<void> {
     let current = await this.client.wallet.getBalance()
     while (current.lt(balance)) {
+      this.logger.log(`current balance: ${current.toFixed(8)}, generate to balance: ${balance}`)
       await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
       current = await this.client.wallet.getBalance()
     }
