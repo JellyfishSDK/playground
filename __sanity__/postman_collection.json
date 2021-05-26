@@ -6,45 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "/_health/probes/liveness",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Status in JSON body is ok\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.status).to.eql(\"ok\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/_health/probes/liveness",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"_health",
-						"probes",
-						"liveness"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "/v1/playground/rpc/getblockchaininfo",
 			"event": [
 				{
