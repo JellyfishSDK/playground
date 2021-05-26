@@ -45,7 +45,7 @@
 			"response": []
 		},
 		{
-			"name": "/v1/rpc/getblockchaininfo",
+			"name": "/v1/playground/rpc/getblockchaininfo",
 			"event": [
 				{
 					"listen": "test",
@@ -68,7 +68,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/v1/rpc/getblockchaininfo",
+					"raw": "http://localhost:3000/v1/playground/rpc/getblockchaininfo",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -76,6 +76,7 @@
 					"port": "3000",
 					"path": [
 						"v1",
+						"playground",
 						"rpc",
 						"getblockchaininfo"
 					]
@@ -84,7 +85,7 @@
 			"response": []
 		},
 		{
-			"name": "/v1/rpc/getblockhash",
+			"name": "/v1/playground/rpc/getblockhash",
 			"event": [
 				{
 					"listen": "test",
@@ -116,7 +117,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/v1/rpc/getblockhash",
+					"raw": "http://localhost:3000/v1/playground/rpc/getblockhash",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -124,6 +125,7 @@
 					"port": "3000",
 					"path": [
 						"v1",
+						"playground",
 						"rpc",
 						"getblockhash"
 					]
