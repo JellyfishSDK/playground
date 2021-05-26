@@ -6,46 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "/_health/probes/liveness",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Status in JSON body is ok\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.status).to.eql(\"ok\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/_health/probes/liveness",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"_health",
-						"probes",
-						"liveness"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/v1/rpc/getblockchaininfo",
+			"name": "/v1/playground/rpc/getblockchaininfo",
 			"event": [
 				{
 					"listen": "test",
@@ -68,7 +29,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/v1/rpc/getblockchaininfo",
+					"raw": "http://localhost:3000/v1/playground/rpc/getblockchaininfo",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -76,6 +37,7 @@
 					"port": "3000",
 					"path": [
 						"v1",
+						"playground",
 						"rpc",
 						"getblockchaininfo"
 					]
@@ -84,7 +46,7 @@
 			"response": []
 		},
 		{
-			"name": "/v1/rpc/getblockhash",
+			"name": "/v1/playground/rpc/getblockhash",
 			"event": [
 				{
 					"listen": "test",
@@ -116,7 +78,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/v1/rpc/getblockhash",
+					"raw": "http://localhost:3000/v1/playground/rpc/getblockhash",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -124,6 +86,7 @@
 					"port": "3000",
 					"path": [
 						"v1",
+						"playground",
 						"rpc",
 						"getblockhash"
 					]

@@ -118,7 +118,7 @@ export class CallRequest {
   params?: any[]
 }
 
-@Controller('/v1/rpc')
+@Controller('/v1/playground/rpc')
 export class RpcController {
   constructor (private readonly client: JsonRpcClient) {
   }

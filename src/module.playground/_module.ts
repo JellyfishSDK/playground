@@ -1,16 +1,16 @@
-import { Global, Module, OnApplicationBootstrap } from '@nestjs/common'
-import { PlaygroundToken } from '@src/module.playground/playground.token'
-import { PlaygroundDex } from '@src/module.playground/playground.dex'
+import { Global, Logger, Module, OnApplicationBootstrap } from '@nestjs/common'
+import { SetupToken } from '@src/module.playground/setup/setup.token'
+import { SetupDex } from '@src/module.playground/setup/setup.dex'
 import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { PlaygroundBlock } from '@src/module.playground/playground.block'
-import { Playground } from '@src/module.playground/playground'
+import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 
 @Global()
 @Module({
   providers: [
-    PlaygroundToken,
-    PlaygroundDex,
+    SetupToken,
+    SetupDex,
     PlaygroundBlock,
     PlaygroundProbeIndicator
   ],
@@ -19,21 +19,33 @@ import { Playground } from '@src/module.playground/playground'
   ]
 })
 export class PlaygroundModule implements OnApplicationBootstrap {
+  private readonly logger = new Logger(PlaygroundModule.name)
+
+  private readonly setups: Array<PlaygroundSetup<any>>
+
   constructor (
-    private readonly token: PlaygroundToken,
-    private readonly dex: PlaygroundDex,
     private readonly client: JsonRpcClient,
-    private readonly indicator: PlaygroundProbeIndicator
+    private readonly indicator: PlaygroundProbeIndicator,
+    token: SetupToken, dex: SetupDex
   ) {
+    this.setups = [
+      token,
+      dex
+    ]
   }
 
   async onApplicationBootstrap (): Promise<void> {
     await this.waitForDeFiD()
-    await this.client.call('importprivkey', [Playground.MN_KEY.owner.privKey, 'coinbase'], 'number')
-    await this.client.call('importprivkey', [Playground.MN_KEY.operator.privKey, 'coinbase'], 'number')
 
-    await this.token.init()
-    await this.dex.init()
+    this.logger.log('setup started')
+    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'coinbase'], 'number')
+    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'coinbase'], 'number')
+
+    for (const setup of this.setups) {
+      await setup.setup()
+    }
+
+    this.logger.log('setup completed')
     this.indicator.ready = true
   }
 

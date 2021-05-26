@@ -1,10 +1,23 @@
 version: '3.7'
 
 services:
-  defi-blockchain:
-    image: defi/defichain:1.6.4
+  traefik:
+    image: traefik:v2.4
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:3000"
+      - "--entrypoints.ping.address=:8082"
+      - "--ping.entryPoint=ping"
     ports:
-      - "19554:19554"
+      - "3000:3000"
+      - "8080:8080"
+      - "8082:8082"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  defi-blockchain:
+    image: defi/defichain:1.7.0
     command: >
       defid
       -printtoconsole
@@ -24,22 +37,35 @@ services:
       -clarkequayheight=3
       -dakotaheight=4
       -dakotacrescentheight=5
+      -eunosheight=6
 
   defi-whale:
     image: ghcr.io/defich/whale:latest
     depends_on:
       - defi-blockchain
+    ports:
+      - "3001:3000"
     environment:
       WHALE_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
-      WHALE_NETWORK: regtest
       WHALE_DATABASE_PROVIDER: memory
+      WHALE_NETWORK: playground
+    labels:
+      - "traefik.http.routers.whale.priority=1"
+      - "traefik.http.routers.whale.rule=PathPrefix(`/{version:v[1-9]}/playground/`)"
+      - "traefik.http.routers.whale.entrypoints=web"
+      - "traefik.http.services.whale.loadbalancer.server.port=3000"
 
   defi-playground:
     build: ..
     image: ghcr.io/defich/playground:latest
-    ports:
-      - "3000:3000"
     depends_on:
       - defi-blockchain
+    ports:
+      - "3002:3000"
     environment:
       PLAYGROUND_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
+    labels:
+      - "traefik.http.routers.playground.priority=0"
+      - "traefik.http.routers.playground.rule=PathPrefix(`/{version:v[1-9]}/playground/rpc/`)"
+      - "traefik.http.routers.playground.entrypoints=web"
+      - "traefik.http.services.playground.loadbalancer.server.port=3000"

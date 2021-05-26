@@ -1,15 +1,18 @@
 import { Interval } from '@nestjs/schedule'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
-import { Playground } from '@src/module.playground/playground'
+import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 
 @Injectable()
 export class PlaygroundBlock {
+  private readonly logger = new Logger(PlaygroundBlock.name)
+
   constructor (private readonly client: JsonRpcClient) {
   }
 
   @Interval(3000)
   async generate (): Promise<void> {
-    await this.client.call('generatetoaddress', [1, Playground.address, 1], 'number')
+    await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
+    this.logger.log('generated new block')
   }
 }
