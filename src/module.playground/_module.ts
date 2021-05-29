@@ -36,10 +36,7 @@ export class PlaygroundModule implements OnApplicationBootstrap {
 
   async onApplicationBootstrap (): Promise<void> {
     await this.waitForDeFiD()
-
-    this.logger.log('setup started')
-    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'coinbase'], 'number')
-    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'coinbase'], 'number')
+    await this.importPrivKey()
 
     for (const setup of this.setups) {
       await setup.setup()
@@ -49,23 +46,31 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     this.indicator.ready = true
   }
 
+  async importPrivKey (): Promise<void> {
+    this.logger.log('importing private keys')
+
+    if (await this.client.blockchain.getBlockCount() > 0) {
+      return
+    }
+
+    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'coinbase'], 'number')
+    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'coinbase'], 'number')
+  }
+
   async waitForDeFiD (timeout = 15000): Promise<void> {
     const expiredAt = Date.now() + timeout
 
-    return await new Promise((resolve, reject) => {
-      const loop = (): void => {
-        this.client.blockchain.getBlockCount().then(() => {
-          resolve()
-        }).catch(err => {
-          if (expiredAt < Date.now()) {
-            reject(new Error(`DeFiD not ready within given timeout of ${timeout}ms.\n${err.message as string}`))
-          } else {
-            setTimeout(() => loop(), 200)
-          }
-        })
+    while (expiredAt > Date.now()) {
+      try {
+        await this.client.blockchain.getBlockCount()
+        return
+      } catch (err) {
       }
+      await new Promise((resolve) => {
+        setTimeout(_ => resolve(0), 1000)
+      })
+    }
 
-      loop()
-    })
+    throw new Error(`DeFiD not ready within given timeout of ${timeout}ms.`)
   }
 }
