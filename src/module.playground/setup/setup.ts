@@ -79,7 +79,7 @@ export abstract class PlaygroundSetup<Each> {
     const target = current + count
     while (current < target) {
       this.logger.log(`current block: ${current}, generate +${count} block`)
-      await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
+      await this.generateToAddress()
       current = await this.client.blockchain.getBlockCount()
     }
   }
@@ -91,8 +91,19 @@ export abstract class PlaygroundSetup<Each> {
     let current = await this.client.wallet.getBalance()
     while (current.lt(balance)) {
       this.logger.log(`current balance: ${current.toFixed(8)}, generate to balance: ${balance}`)
-      await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
+      await this.generateToAddress()
       current = await this.client.wallet.getBalance()
     }
+  }
+
+  private async generateToAddress (): Promise<void> {
+    await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
+    await this.wait(200)
+  }
+
+  private async wait (millis: number): Promise<void> {
+    await new Promise((resolve) => {
+      setTimeout(_ => resolve(0), millis)
+    })
   }
 }
