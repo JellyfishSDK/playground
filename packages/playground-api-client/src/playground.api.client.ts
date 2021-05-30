@@ -4,6 +4,7 @@ import { URLSearchParams } from 'url'
 import { raiseIfError, PlaygroundClientException, PlaygroundClientTimeoutException } from './errors'
 import { PlaygroundApiResponse, ApiPagedResponse } from './playground.api.response'
 import { Rpc } from './api/rpc'
+import { Stats } from './api/stats'
 
 /**
  * PlaygroundApiClient Options
@@ -44,6 +45,7 @@ export interface ResponseAsString {
 
 export class PlaygroundApiClient {
   public readonly rpc = new Rpc(this)
+  public readonly stats = new Stats(this)
 
   constructor (
     private readonly options: PlaygroundApiClientOptions
