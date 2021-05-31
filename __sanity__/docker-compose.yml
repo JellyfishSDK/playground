@@ -17,7 +17,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   defi-blockchain:
-    image: defi/defichain:1.7.0
+    image: defi/defichain:1.7.3
     command: >
       defid
       -printtoconsole
@@ -66,6 +66,6 @@ services:
       PLAYGROUND_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
     labels:
       - "traefik.http.routers.playground.priority=0"
-      - "traefik.http.routers.playground.rule=PathPrefix(`/{version:v[1-9]}/playground/rpc/`)"
+      - "traefik.http.routers.playground.rule=PathPrefix(`/{version:v[1-9]}/playground/rpc/`, `/{version:v[1-9]}/playground/stats/`)"
       - "traefik.http.routers.playground.entrypoints=web"
       - "traefik.http.services.playground.loadbalancer.server.port=3000"

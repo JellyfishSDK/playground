@@ -98,7 +98,7 @@ export abstract class PlaygroundSetup<Each> {
 
   private async generateToAddress (): Promise<void> {
     await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
-    await this.wait(200)
+    await this.wait(100)
   }
 
   private async wait (millis: number): Promise<void> {
