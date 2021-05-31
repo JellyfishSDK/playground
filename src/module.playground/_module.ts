@@ -53,8 +53,8 @@ export class PlaygroundModule implements OnApplicationBootstrap {
       return
     }
 
-    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'coinbase'], 'number')
-    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'coinbase'], 'number')
+    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'owner'], 'number')
+    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'operator'], 'number')
   }
 
   async waitForDeFiD (timeout = 15000): Promise<void> {
