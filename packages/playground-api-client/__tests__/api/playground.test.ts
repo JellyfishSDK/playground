@@ -43,7 +43,6 @@ it('should get wallet', async () => {
   expect(wallet).toStrictEqual({
     balance: expect.any(Number),
     tokens: [
-      { id: '0', balance: expect.any(Number) },
       { id: '1', balance: expect.any(Number) },
       { id: '2', balance: expect.any(Number) },
       { id: '3', balance: expect.any(Number) },

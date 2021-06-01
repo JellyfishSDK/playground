@@ -25,7 +25,8 @@
     "packages:publish:latest": "lerna exec -- npm publish --tag latest --access public"
   },
   "dependencies": {
-    "@defichain/jellyfish-api-jsonrpc": "next",
+    "@defichain/jellyfish-api-core": "0.10.1",
+    "@defichain/jellyfish-api-jsonrpc": "0.10.1",
     "@nestjs/common": "^7.6.15",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.15",
@@ -39,7 +40,7 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "@defichain/testcontainers": "next",
+    "@defichain/testcontainers": "0.10.1",
     "@nestjs/cli": "^7.6.0",
     "@nestjs/schematics": "^7.3.0",
     "@nestjs/testing": "^7.6.15",
