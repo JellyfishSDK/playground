@@ -1,15 +1,25 @@
 import { Controller, Get } from '@nestjs/common'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
-import { StatsAll } from '@playground-api-client/api/stats'
+import { Info, Wallet } from '@playground-api-client/api/playground'
 
-@Controller('/v1/playground/stats')
-export class StatsController {
+@Controller('/v1/playground')
+export class PlaygroundController {
   constructor (private readonly client: JsonRpcClient) {
   }
 
-  @Get('/all')
-  async all (): Promise<StatsAll> {
+  @Get('/info')
+  async info (): Promise<Info> {
     const info = await this.client.blockchain.getBlockchainInfo()
+    return {
+      block: {
+        count: info.blocks,
+        hash: info.bestblockhash
+      }
+    }
+  }
+
+  @Get('/wallet')
+  async wallet (): Promise<Wallet> {
     const balance = await this.client.wallet.getBalance()
     const account = await this.client.account.getTokenBalances({}, true, {
       symbolLookup: false
@@ -23,16 +33,8 @@ export class StatsController {
     })
 
     return {
-      block: {
-        count: info.blocks,
-        hash: info.bestblockhash
-      },
-      wallet: {
-        balance: balance.toNumber()
-      },
-      account: {
-        tokens: tokens
-      }
+      balance: balance.toNumber(),
+      tokens: tokens
     }
   }
 }
