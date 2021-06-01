@@ -62,8 +62,10 @@ export class PlaygroundModule implements OnApplicationBootstrap {
 
     while (expiredAt > Date.now()) {
       try {
-        await this.client.blockchain.getBlockCount()
-        return
+        const info = await this.client.blockchain.getBlockchainInfo()
+        if (!info.initialblockdownload) {
+          return
+        }
       } catch (err) {
       }
       await new Promise((resolve) => {

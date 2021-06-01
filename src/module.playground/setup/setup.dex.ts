@@ -1,11 +1,13 @@
 import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 import { Injectable } from '@nestjs/common'
 import { AddPoolLiquiditySource, CreatePoolPairMetadata } from '@defichain/jellyfish-api-core/dist/category/poolpair'
+import { UtxosToAccountPayload } from '@defichain/jellyfish-api-core/dist/category/account'
 
 interface PoolPairSetup {
   symbol: `${string}-${string}`
   create: CreatePoolPairMetadata
   add: AddPoolLiquiditySource
+  utxoToAccount?: UtxosToAccountPayload
 }
 
 @Injectable()
@@ -23,6 +25,9 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         },
         add: {
           '*': ['1000@DFI', '1000@tBTC']
+        },
+        utxoToAccount: {
+          [PlaygroundSetup.address]: '1000@0'
         }
       },
       {
@@ -36,6 +41,9 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         },
         add: {
           '*': ['100@DFI', '1000@tETH']
+        },
+        utxoToAccount: {
+          [PlaygroundSetup.address]: '100@0'
         }
       },
       {
@@ -49,6 +57,9 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         },
         add: {
           '*': ['100@DFI', '100000@tUSD']
+        },
+        utxoToAccount: {
+          [PlaygroundSetup.address]: '100@0'
         }
       },
       {
@@ -80,15 +91,14 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
     ]
   }
 
-  protected async before (list: PoolPairSetup[]): Promise<void> {
-    await this.waitForBalance(2001)
-    await this.client.account.utxosToAccount({ [PlaygroundSetup.address]: '2000@0' })
-    await this.generate(1)
-
-    return await super.before(list)
-  }
-
   async create (each: PoolPairSetup): Promise<void> {
+    if (each.utxoToAccount !== undefined) {
+      const amount = Object.values(each.utxoToAccount)[0].replace('@0', '')
+      await this.waitForBalance(Number(amount) + 1)
+      await this.client.account.utxosToAccount(each.utxoToAccount)
+      await this.generate(1)
+    }
+
     await this.client.poolpair.createPoolPair(each.create)
     await this.generate(1)
 
