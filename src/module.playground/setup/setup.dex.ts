@@ -41,10 +41,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['100@DFI', '1000@tETH']
+          '*': ['1000@DFI', '100000@tETH']
         },
         utxoToAccount: {
-          [PlaygroundSetup.address]: '100@0'
+          [PlaygroundSetup.address]: '1000@0'
         }
       },
       {
@@ -57,10 +57,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['100@DFI', '100000@tUSD']
+          '*': ['1000@DFI', '10000000@tUSD']
         },
         utxoToAccount: {
-          [PlaygroundSetup.address]: '100@0'
+          [PlaygroundSetup.address]: '1000@0'
         }
       },
       {
@@ -73,7 +73,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['100000@tUSD', '1000@tLTC']
+          '*': ['100@DFI', '10000@tLTC']
+        },
+        utxoToAccount: {
+          [PlaygroundSetup.address]: '100@0'
         }
       }
     ]

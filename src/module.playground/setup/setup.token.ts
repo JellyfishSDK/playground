@@ -31,7 +31,7 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
           tradeable: true,
           collateralAddress: PlaygroundSetup.address
         },
-        amount: 100000
+        amount: 100000000
       },
       {
         create: {
@@ -42,7 +42,7 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
           tradeable: true,
           collateralAddress: PlaygroundSetup.address
         },
-        amount: 10000000
+        amount: 1000000000
       },
       {
         create: {
@@ -53,7 +53,7 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
           tradeable: true,
           collateralAddress: PlaygroundSetup.address
         },
-        amount: 10000
+        amount: 100000
       }
     ]
   }
