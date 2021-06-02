@@ -57,12 +57,15 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'operator'], 'number')
   }
 
-  async waitForDeFiD (timeout = 15000): Promise<void> {
+  async waitForDeFiD (timeout = 20000): Promise<void> {
     const expiredAt = Date.now() + timeout
 
     while (expiredAt > Date.now()) {
       try {
         const info = await this.client.blockchain.getBlockchainInfo()
+        if (info.blocks === 0) {
+          return
+        }
         if (!info.initialblockdownload) {
           return
         }
