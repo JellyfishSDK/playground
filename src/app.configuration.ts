@@ -10,6 +10,6 @@ export const AppConfiguration = (): any => ({
   },
   playground: {
     // Playground alive till max block count
-    maxBlockCount: 20 * 60 * 24 // 1 day
+    maxBlockCount: 20 * 60 * 24 // 1 day with - 1 block per 3 seconds
   }
 })

@@ -13,6 +13,7 @@ export class PlaygroundBlock {
   @Interval(3000)
   async generate (): Promise<void> {
     await this.client.call('generatetoaddress', [1, PlaygroundSetup.address, 1], 'number')
-    this.logger.log('generated new block')
+    const count = await this.client.blockchain.getBlockCount()
+    this.logger.log(`generated new block - height: ${count}`)
   }
 }

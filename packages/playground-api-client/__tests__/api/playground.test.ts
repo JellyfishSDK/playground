@@ -26,30 +26,31 @@ afterAll(async () => {
   }
 })
 
-it('should get all stats', async () => {
-  const stats = await client.stats.all()
+it('should get info', async () => {
+  const info = await client.playground.info()
 
-  expect(stats).toStrictEqual({
+  expect(info).toStrictEqual({
     block: {
       count: expect.any(Number),
       hash: expect.stringMatching(/[0-f]{64}/)
-    },
-    wallet: {
-      balance: expect.any(Number)
-    },
-    account: {
-      tokens: [
-        { id: '0', balance: expect.any(Number) },
-        { id: '1', balance: expect.any(Number) },
-        { id: '2', balance: expect.any(Number) },
-        { id: '3', balance: expect.any(Number) },
-        { id: '4', balance: expect.any(Number) },
-        { id: '5', balance: expect.any(Number) },
-        { id: '6', balance: expect.any(Number) },
-        { id: '7', balance: expect.any(Number) },
-        { id: '8', balance: expect.any(Number) },
-        { id: '9', balance: expect.any(Number) }
-      ]
     }
+  })
+})
+
+it('should get wallet', async () => {
+  const wallet = await client.playground.wallet()
+
+  expect(wallet).toStrictEqual({
+    balance: expect.any(Number),
+    tokens: [
+      { id: '1', balance: expect.any(Number) },
+      { id: '2', balance: expect.any(Number) },
+      { id: '3', balance: expect.any(Number) },
+      { id: '4', balance: expect.any(Number) },
+      { id: '5', balance: expect.any(Number) },
+      { id: '6', balance: expect.any(Number) },
+      { id: '7', balance: expect.any(Number) },
+      { id: '8', balance: expect.any(Number) }
+    ]
   })
 })
