@@ -13,6 +13,7 @@ interface PoolPairSetup {
 @Injectable()
 export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
   list (): PoolPairSetup[] {
+    // MAX_SYMBOL_LENGTH = 8
     return [
       {
         symbol: 'DFI-tBTC',
@@ -63,29 +64,16 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         }
       },
       {
-        symbol: 'tBTC-tUSD',
+        symbol: 'DFI-tLTC',
         create: {
-          tokenA: 'tBTC',
-          tokenB: 'tUSD',
+          tokenA: 'DFI',
+          tokenB: 'tLTC',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['100@tBTC', '100000@tUSD']
-        }
-      },
-      {
-        symbol: 'tLTC-tUSD',
-        create: {
-          tokenA: 'tLTC',
-          tokenB: 'tUSD',
-          commission: 0,
-          status: true,
-          ownerAddress: PlaygroundSetup.address
-        },
-        add: {
-          '*': ['1000@tLTC', '100000@tUSD']
+          '*': ['100000@tUSD', '1000@tLTC']
         }
       }
     ]
