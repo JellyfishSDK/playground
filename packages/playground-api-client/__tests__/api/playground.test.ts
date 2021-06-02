@@ -50,8 +50,7 @@ it('should get wallet', async () => {
       { id: '5', balance: expect.any(Number) },
       { id: '6', balance: expect.any(Number) },
       { id: '7', balance: expect.any(Number) },
-      { id: '8', balance: expect.any(Number) },
-      { id: '9', balance: expect.any(Number) }
+      { id: '8', balance: expect.any(Number) }
     ]
   })
 })
