@@ -1,6 +1,5 @@
 import AbortController from 'abort-controller'
 import fetch from 'cross-fetch'
-import { URLSearchParams } from 'url'
 import { raiseIfError, PlaygroundClientException, PlaygroundClientTimeoutException } from './errors'
 import { PlaygroundApiResponse, ApiPagedResponse } from './playground.api.response'
 import { Rpc } from './api/rpc'
