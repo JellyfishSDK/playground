@@ -41,7 +41,6 @@
   },
   "devDependencies": {
     "@defichain/testcontainers": "next",
-
     "@nestjs/cli": "^7.6.0",
     "@nestjs/schematics": "^7.3.0",
     "@nestjs/testing": "^7.6.15",
