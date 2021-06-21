@@ -1,5 +1,3 @@
-import { HttpStatus } from '@nestjs/common'
-
 export enum PlaygroundApiErrorType {
   ValidationError = 'ValidationError',
   BadRequest = 'BadRequest',
@@ -13,7 +11,7 @@ export enum PlaygroundApiErrorType {
 }
 
 export interface PlaygroundApiError {
-  code: HttpStatus
+  code: number
   type: PlaygroundApiErrorType
   at: number
   message?: string
