@@ -29,7 +29,7 @@ afterAll(async () => {
 it('should throw error on invalid params', async () => {
   await expect(
     client.rpc.call('getblock', [{ block: 1 }], 'number')
-  ).rejects.toThrow('400 - BadRequest (/v1/playground/rpc/getblock): RpcApiError: \'JSON value is not a string as expected\', code: -1, method: getblock')
+  ).rejects.toThrow('400 - BadRequest (/v0/playground/rpc/getblock): RpcApiError: \'JSON value is not a string as expected\', code: -1, method: getblock')
 })
 
 describe('whitelisted rpc methods', () => {

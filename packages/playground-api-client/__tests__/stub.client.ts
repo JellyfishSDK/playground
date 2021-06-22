@@ -17,7 +17,7 @@ export class StubPlaygroundApiClient extends PlaygroundApiClient {
 
     const res = await this.service.app.inject({
       method: method,
-      url: `/v1/playground/${path}`,
+      url: `/v0/playground/${path}`,
       payload: body,
       headers: method !== 'GET' ? { 'Content-Type': 'application/json' } : {}
     })
