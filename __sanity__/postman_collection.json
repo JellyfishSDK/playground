@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "/v1/playground/rpc/getblockchaininfo",
+			"name": "/v0/playground/rpc/getblockchaininfo",
 			"event": [
 				{
 					"listen": "test",
@@ -29,14 +29,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/v1/playground/rpc/getblockchaininfo",
+					"raw": "http://localhost:3000/v0/playground/rpc/getblockchaininfo",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"v1",
+						"v0",
 						"playground",
 						"rpc",
 						"getblockchaininfo"
@@ -46,7 +46,7 @@
 			"response": []
 		},
 		{
-			"name": "/v1/playground/rpc/getblockhash",
+			"name": "/v0/playground/rpc/getblockhash",
 			"event": [
 				{
 					"listen": "test",
@@ -78,14 +78,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/v1/playground/rpc/getblockhash",
+					"raw": "http://localhost:3000/v0/playground/rpc/getblockhash",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"v1",
+						"v0",
 						"playground",
 						"rpc",
 						"getblockhash"

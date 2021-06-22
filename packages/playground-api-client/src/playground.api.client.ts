@@ -20,7 +20,7 @@ export interface PlaygroundApiClientOptions {
   /**
    * Version of API
    */
-  version?: 'v1'
+  version?: 'v0'
 }
 
 /**
@@ -29,7 +29,7 @@ export interface PlaygroundApiClientOptions {
 export const DefaultOptions: PlaygroundApiClientOptions = {
   url: 'https://ocean.defichain.com',
   timeout: 60000,
-  version: 'v1'
+  version: 'v0'
 }
 
 /**
