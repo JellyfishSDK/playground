@@ -13,7 +13,7 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
     return [
       {
         create: {
-          symbol: 'tBTC',
+          symbol: 'BTC',
           name: 'Playground BTC',
           isDAT: true,
           mintable: true,
@@ -24,7 +24,7 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
       },
       {
         create: {
-          symbol: 'tETH',
+          symbol: 'ETH',
           name: 'Playground ETH',
           isDAT: true,
           mintable: true,
@@ -35,8 +35,8 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
       },
       {
         create: {
-          symbol: 'tUSD',
-          name: 'Playground USD',
+          symbol: 'USDT',
+          name: 'Playground USDT',
           isDAT: true,
           mintable: true,
           tradeable: true,
@@ -46,7 +46,7 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
       },
       {
         create: {
-          symbol: 'tLTC',
+          symbol: 'LTC',
           name: 'Playground LTC',
           isDAT: true,
           mintable: true,

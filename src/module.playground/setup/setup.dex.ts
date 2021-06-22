@@ -16,64 +16,64 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
     // MAX_SYMBOL_LENGTH = 8
     return [
       {
-        symbol: 'DFI-tBTC',
+        symbol: 'DFI-BTC',
         create: {
           tokenA: 'DFI',
-          tokenB: 'tBTC',
+          tokenB: 'BTC',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['1000@DFI', '1000@tBTC']
+          '*': ['1000@DFI', '1000@BTC']
         },
         utxoToAccount: {
           [PlaygroundSetup.address]: '1000@0'
         }
       },
       {
-        symbol: 'DFI-tETH',
+        symbol: 'DFI-ETH',
         create: {
           tokenA: 'DFI',
-          tokenB: 'tETH',
+          tokenB: 'ETH',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['1000@DFI', '100000@tETH']
+          '*': ['1000@DFI', '100000@ETH']
         },
         utxoToAccount: {
           [PlaygroundSetup.address]: '1000@0'
         }
       },
       {
-        symbol: 'DFI-tUSD',
+        symbol: 'DFI-USDT',
         create: {
           tokenA: 'DFI',
-          tokenB: 'tUSD',
+          tokenB: 'USDT',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['1000@DFI', '10000000@tUSD']
+          '*': ['1000@DFI', '10000000@USDT']
         },
         utxoToAccount: {
           [PlaygroundSetup.address]: '1000@0'
         }
       },
       {
-        symbol: 'DFI-tLTC',
+        symbol: 'DFI-LTC',
         create: {
           tokenA: 'DFI',
-          tokenB: 'tLTC',
+          tokenB: 'LTC',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
         },
         add: {
-          '*': ['100@DFI', '10000@tLTC']
+          '*': ['100@DFI', '10000@LTC']
         },
         utxoToAccount: {
           [PlaygroundSetup.address]: '100@0'
