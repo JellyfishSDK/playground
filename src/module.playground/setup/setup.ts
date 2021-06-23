@@ -5,12 +5,12 @@ import { Injectable, Logger } from '@nestjs/common'
 export abstract class PlaygroundSetup<Each> {
   static MN_KEY = {
     owner: {
-      address: 'mwsZw8nF7pKxWH8eoKL9tPxTpaFkz7QeLU',
-      privKey: 'cRiRQ9cHmy5evDqNDdEV8f6zfbK6epi9Fpz4CRZsmLEmkwy54dWz'
+      address: 'bcrt1qyeuu9rvq8a67j86pzvh5897afdmdjpyankp4mu',
+      privKey: 'cUX8AEUZYsZxNUh5fTS7ZGnF6SPQuTeTDTABGrp5dbPftCga2zcp'
     },
     operator: {
-      address: 'mswsMVsyGMj1FzDMbbxw2QW3KvQAv2FKiy',
-      privKey: 'cPGEaz8AGiM71NGMRybbCqFNRcuUhg3uGvyY4TFE1BZC26EW2PkC'
+      address: 'bcrt1qurwyhta75n2g75u2u5nds9p6w9v62y8wr40d2r',
+      privKey: 'cUp5EVEjuAGpemSuejP36TWWuFKzuCbUJ4QAKJTiSSB2vXzDLsJW'
     }
   }
 
@@ -18,7 +18,7 @@ export abstract class PlaygroundSetup<Each> {
    * @return {string} address that should be used for everything
    */
   static get address (): string {
-    return PlaygroundSetup.MN_KEY.operator.address
+    return PlaygroundSetup.MN_KEY.owner.address
   }
 
   private readonly logger = new Logger(PlaygroundSetup.name)
