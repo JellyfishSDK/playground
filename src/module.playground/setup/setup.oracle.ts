@@ -10,10 +10,12 @@ interface OracleSetup {
 
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
+  oracleOwnerAddress: string = 'bcrt1qyeuu9rvq8a67j86pzvh5897afdmdjpyankp4mu'
+
   list (): OracleSetup[] {
     return [
       {
-        address: PlaygroundSetup.address,
+        address: this.oracleOwnerAddress,
         priceFeeds: [
           {
             token: 'TSLA',
@@ -33,7 +35,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
         }
       },
       {
-        address: PlaygroundSetup.address,
+        address: this.oracleOwnerAddress,
         priceFeeds: [
           {
             token: 'TSLA',
@@ -53,7 +55,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
         }
       },
       {
-        address: PlaygroundSetup.address,
+        address: this.oracleOwnerAddress,
         priceFeeds: [
           {
             token: 'TSLA',
