@@ -28,3 +28,8 @@ it('should have tokens setup', async () => {
   const tokens = await client.token.listTokens()
   expect(Object.values(tokens).length).toBe(9)
 })
+
+it('should have oracles setup', async () => {
+  const oracles = await client.oracle.listOracles()
+  expect(Object.values(oracles).length).toBe(3)
+})
