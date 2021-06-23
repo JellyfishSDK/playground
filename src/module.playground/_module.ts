@@ -1,6 +1,7 @@
 import { Global, Logger, Module, OnApplicationBootstrap } from '@nestjs/common'
 import { SetupToken } from '@src/module.playground/setup/setup.token'
 import { SetupDex } from '@src/module.playground/setup/setup.dex'
+import { SetupOracle } from '@src/module.playground/setup/setup.oracle'
 import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { PlaygroundBlock } from '@src/module.playground/playground.block'
@@ -11,6 +12,7 @@ import { PlaygroundSetup } from '@src/module.playground/setup/setup'
   providers: [
     SetupToken,
     SetupDex,
+    SetupOracle,
     PlaygroundBlock,
     PlaygroundProbeIndicator
   ],
@@ -26,11 +28,12 @@ export class PlaygroundModule implements OnApplicationBootstrap {
   constructor (
     private readonly client: JsonRpcClient,
     private readonly indicator: PlaygroundProbeIndicator,
-    token: SetupToken, dex: SetupDex
+    token: SetupToken, dex: SetupDex, oracle: SetupOracle
   ) {
     this.setups = [
       token,
-      dex
+      dex,
+      oracle
     ]
   }
 
