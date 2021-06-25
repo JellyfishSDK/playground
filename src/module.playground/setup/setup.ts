@@ -18,7 +18,7 @@ export abstract class PlaygroundSetup<Each> {
    * @return {string} address that should be used for everything
    */
   static get address (): string {
-    return PlaygroundSetup.MN_KEY.owner.address
+    return PlaygroundSetup.MN_KEY.operator.address
   }
 
   private readonly logger = new Logger(PlaygroundSetup.name)
