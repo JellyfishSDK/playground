@@ -75,11 +75,11 @@ jobs:
       - name: Setup docker containers
         run: docker-compose -f __sanity__/docker-compose.yml up -d
 
-      - name: Wait for :3002/_health/probes/liveness
-        run: ./__sanity__/wait-for http://localhost:3001/_health/probes/liveness -t 120
+      - name: Wait for :3002/_actuator/probes/liveness
+        run: ./__sanity__/wait-for http://localhost:3001/_actuator/probes/liveness -t 120
 
-      - name: Wait for :3001/_health/probes/liveness
-        run: ./__sanity__/wait-for http://localhost:3002/_health/probes/liveness -t 120
+      - name: Wait for :3001/_actuator/probes/liveness
+        run: ./__sanity__/wait-for http://localhost:3002/_actuator/probes/liveness -t 120
 
       - name: Wait for :8082/ping
         run: ./__sanity__/wait-for http://localhost:8082/ping -t 120
