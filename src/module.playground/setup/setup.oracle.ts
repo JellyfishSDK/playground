@@ -10,7 +10,7 @@ interface OracleSetup {
 
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
-  oracleOwnerAddress: string = 'bcrt1qyeuu9rvq8a67j86pzvh5897afdmdjpyankp4mu'
+  oracleOwnerAddress: string = 'bcrt1qurwyhta75n2g75u2u5nds9p6w9v62y8wr40d2r'
 
   list (): OracleSetup[] {
     return [
