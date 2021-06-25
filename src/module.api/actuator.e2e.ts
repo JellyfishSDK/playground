@@ -15,11 +15,11 @@ afterAll(async () => {
   await stopTestingApp(container, app)
 })
 
-describe('/_health/probes/liveness', () => {
+describe('/_actuator/probes/liveness', () => {
   it('should wait until liveness', async () => {
     const res = await app.inject({
       method: 'GET',
-      url: '/_health/probes/liveness'
+      url: '/_actuator/probes/liveness'
     })
 
     expect(res.statusCode).toStrictEqual(200)
@@ -46,11 +46,11 @@ describe('/_health/probes/liveness', () => {
   })
 })
 
-describe('/_health/probes/readiness', () => {
+describe('/_actuator/probes/readiness', () => {
   it('should wait until readiness', async () => {
     const res = await app.inject({
       method: 'GET',
-      url: '/_health/probes/readiness'
+      url: '/_actuator/probes/readiness'
     })
 
     expect(res.statusCode).toStrictEqual(200)

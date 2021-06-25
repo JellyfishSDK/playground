@@ -3,8 +3,8 @@ import { HealthCheck, HealthCheckResult, HealthCheckService } from '@nestjs/term
 import { DeFiDProbeIndicator } from '@src/module.defid/defid.indicator'
 import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indicator'
 
-@Controller('/_health')
-export class HealthController {
+@Controller('/_actuator')
+export class ActuatorController {
   constructor (
     private readonly health: HealthCheckService,
     private readonly defid: DeFiDProbeIndicator,

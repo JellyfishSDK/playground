@@ -1,7 +1,7 @@
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { Module } from '@nestjs/common'
 import { RpcController } from '@src/module.api/rpc.controller'
-import { HealthController } from '@src/module.api/health.controller'
+import { ActuatorController } from '@src/module.api/actuator.controller'
 import { ExceptionInterceptor } from '@src/module.api/interceptors/exception.interceptor'
 import { ResponseInterceptor } from '@src/module.api/interceptors/response.interceptor'
 import { PlaygroundController } from '@src/module.api/playground.controller'
@@ -11,7 +11,7 @@ import { PlaygroundController } from '@src/module.api/playground.controller'
  */
 @Module({
   controllers: [
-    HealthController,
+    ActuatorController,
     RpcController,
     PlaygroundController
   ],
