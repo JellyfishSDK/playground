@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@defichain/testcontainers": ">=0.25.0",
-    "@nestjs/cli": "^7.6.0",
+    "@nestjs/cli": "^8.0.2",
     "@nestjs/schematics": "^7.3.0",
     "@nestjs/testing": "^7.6.15",
     "@types/cron": "^1.7.2",
