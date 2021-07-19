@@ -41,7 +41,7 @@ services:
       -eunosheight=6
 
   defi-playground:
-    build: ..
+    build: ../../..
     image: ghcr.io/defich/playground:latest
     depends_on:
       - defi-blockchain
