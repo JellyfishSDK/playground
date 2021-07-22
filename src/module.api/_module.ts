@@ -5,6 +5,7 @@ import { ActuatorController } from '@src/module.api/actuator.controller'
 import { ExceptionInterceptor } from '@src/module.api/interceptors/exception.interceptor'
 import { ResponseInterceptor } from '@src/module.api/interceptors/response.interceptor'
 import { PlaygroundController } from '@src/module.api/playground.controller'
+import { WalletController } from '@src/module.api/wallet.controller'
 
 /**
  * Exposed ApiModule for public interfacing
@@ -13,7 +14,8 @@ import { PlaygroundController } from '@src/module.api/playground.controller'
   controllers: [
     ActuatorController,
     RpcController,
-    PlaygroundController
+    PlaygroundController,
+    WalletController
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },

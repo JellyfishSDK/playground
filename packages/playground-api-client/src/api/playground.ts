@@ -10,13 +10,6 @@ export class Playground {
   async info (): Promise<Info> {
     return await this.client.requestData('GET', 'info')
   }
-
-  /**
-   * @return {Promise<Wallet>} of playground
-   */
-  async wallet (): Promise<Wallet> {
-    return await this.client.requestData('GET', 'wallet')
-  }
 }
 
 export interface Info {
@@ -24,9 +17,4 @@ export interface Info {
     count: number
     hash: string
   }
-}
-
-export interface Wallet {
-  balance: number
-  tokens: Array<{ id: string, balance: number }>
 }
