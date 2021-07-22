@@ -21,6 +21,13 @@ export abstract class PlaygroundSetup<Each> {
     return PlaygroundSetup.MN_KEY.operator.address
   }
 
+  /**
+   * @return {string} privKey that should be used for everything
+   */
+  static get privKey (): string {
+    return PlaygroundSetup.MN_KEY.operator.privKey
+  }
+
   private readonly logger = new Logger(PlaygroundSetup.name)
 
   constructor (protected readonly client: JsonRpcClient) {
