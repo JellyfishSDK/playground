@@ -51,8 +51,7 @@ services:
       PLAYGROUND_DEFID_URL: http://playground-rpcuser:playground-rpcpassword@defi-blockchain:19554
     labels:
       - "traefik.http.services.playground.loadbalancer.server.port=3000"
-      - "traefik.http.routers.playground.priority=0"
-      - "traefik.http.routers.playground.rule=PathPrefix(`/v0/playground/rpc/`, `/v0/playground/wallet`, `/v0/playground/info`)"
+      - "traefik.http.routers.playground.rule=PathPrefix(`/v0/playground/`)"
       - "traefik.http.routers.playground.entrypoints=web"
 
   defi-whale:
@@ -67,9 +66,5 @@ services:
       WHALE_NETWORK: regtest
     labels:
       - "traefik.http.services.whale.loadbalancer.server.port=3000"
-      - "traefik.http.routers.whale.priority=1"
-      - "traefik.http.routers.whale.rule=PathPrefix(`/v0/playground/`)"
+      - "traefik.http.routers.whale.rule=PathPrefix(`/v0.6/regtest/`)"
       - "traefik.http.routers.whale.entrypoints=web"
-      - "traefik.http.routers.whale.middlewares=rewrite"
-      - "traefik.http.middlewares.rewrite.replacepathregex.regex=^/v0/playground/(.*)"
-      - "traefik.http.middlewares.rewrite.replacepathregex.replacement=/v0/regtest/$$1"
