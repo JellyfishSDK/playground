@@ -39,6 +39,7 @@ services:
       -dakotaheight=4
       -dakotacrescentheight=5
       -eunosheight=6
+      -eunospayaheight=7
 
   defi-playground:
     build: ../../..
