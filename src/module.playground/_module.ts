@@ -6,6 +6,8 @@ import { PlaygroundProbeIndicator } from '@src/module.playground/playground.indi
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { PlaygroundBlock } from '@src/module.playground/playground.block'
 import { PlaygroundSetup } from '@src/module.playground/setup/setup'
+import { GenesisKeys } from '@defichain/testcontainers'
+import { SetupMasternode } from '@src/module.playground/setup/setup.masternode'
 
 @Global()
 @Module({
@@ -13,6 +15,7 @@ import { PlaygroundSetup } from '@src/module.playground/setup/setup'
     SetupToken,
     SetupDex,
     SetupOracle,
+    SetupMasternode,
     PlaygroundBlock,
     PlaygroundProbeIndicator
   ],
@@ -28,12 +31,16 @@ export class PlaygroundModule implements OnApplicationBootstrap {
   constructor (
     private readonly client: JsonRpcClient,
     private readonly indicator: PlaygroundProbeIndicator,
-    token: SetupToken, dex: SetupDex, oracle: SetupOracle
+    token: SetupToken,
+    dex: SetupDex,
+    oracle: SetupOracle,
+    masternode: SetupMasternode
   ) {
     this.setups = [
       token,
       dex,
-      oracle
+      oracle,
+      masternode
     ]
   }
 
@@ -56,8 +63,10 @@ export class PlaygroundModule implements OnApplicationBootstrap {
       return
     }
 
-    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.owner.privKey, 'owner'], 'number')
-    await this.client.call('importprivkey', [PlaygroundSetup.MN_KEY.operator.privKey, 'operator'], 'number')
+    for (const genesisKey of GenesisKeys) {
+      await this.client.wallet.importPrivKey(genesisKey.owner.privKey, undefined, false)
+      await this.client.wallet.importPrivKey(genesisKey.operator.privKey, undefined, false)
+    }
   }
 
   async waitForDeFiD (timeout = 45000): Promise<void> {
