@@ -3,19 +3,27 @@ import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 
 interface MasternodeSetup {
   address: string
+  privKey: string
 }
 
 @Injectable()
 export class SetupMasternode extends PlaygroundSetup<MasternodeSetup> {
   list (): MasternodeSetup[] {
     return [
-      { address: 'bcrt1qf3dd6cxs9yqw4sjxnwp03k0twqlr7pcn3330h8' },
-      { address: 'bcrt1qghljr8wvunlsktmf4nzcse8wj8ucx3sf4xzke2' }
+      {
+        address: 'bcrt1qda8rxjyepjcj6dx82sxce3srvv4h2qcz5pjzp0',
+        privKey: 'cPEKM7uMPJxbCpsjLfWuuwkQFP99DgEbBdmUX5xTppe2ibABuWWf'
+      },
+      {
+        address: 'bcrt1qg0ppznzvc6wkp263ldwsss3w4fmx0jkg98snff',
+        privKey: 'cPVwHKcMmE3YrJfdna8t33kiJfEg2oFjJSvHJimshj84xThqV9zi'
+      }
     ]
   }
 
   async create (each: MasternodeSetup): Promise<void> {
     await this.waitForBalance(20001)
+    await this.client.wallet.importPrivKey(each.privKey)
     await this.client.masternode.createMasternode(each.address)
     await this.generate(1)
   }
