@@ -9,7 +9,6 @@ let app: NestFastifyApplication
 
 beforeAll(async () => {
   await container.start()
-  await container.waitForReady()
   await container.waitForWalletCoinbaseMaturity()
   app = await createTestingApp(container)
   client = new JsonRpcClient(await container.getCachedRpcUrl())
@@ -32,4 +31,9 @@ it('should have tokens setup', async () => {
 it('should have oracles setup', async () => {
   const oracles = await client.oracle.listOracles()
   expect(Object.values(oracles).length).toBe(3)
+})
+
+it('should have masternode setup', async () => {
+  const oracles = await client.masternode.listMasternodes()
+  expect(Object.values(oracles).length).toBe(10)
 })

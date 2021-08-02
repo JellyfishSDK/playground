@@ -1,6 +1,7 @@
 import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 import { Injectable } from '@nestjs/common'
 import { AppointOracleOptions, OraclePriceFeed } from '@defichain/jellyfish-api-core/dist/category/oracle'
+import { GenesisKeys } from '@defichain/testcontainers'
 
 interface OracleSetup {
   address: string
@@ -10,7 +11,7 @@ interface OracleSetup {
 
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
-  oracleOwnerAddress: string = 'bcrt1qurwyhta75n2g75u2u5nds9p6w9v62y8wr40d2r'
+  oracleOwnerAddress: string = GenesisKeys[7].operator.address
 
   list (): OracleSetup[] {
     return [
@@ -31,7 +32,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
           }
         ],
         options: {
-          weightage: 1.0
+          weightage: 1
         }
       },
       {
@@ -51,7 +52,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
           }
         ],
         options: {
-          weightage: 1.0
+          weightage: 1
         }
       },
       {
@@ -71,7 +72,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
           }
         ],
         options: {
-          weightage: 1.0
+          weightage: 1
         }
       }
     ]

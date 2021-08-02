@@ -31,6 +31,7 @@
     "@defichain/jellyfish-crypto": ">=0.33.0",
     "@defichain/jellyfish-transaction": ">=0.33.0",
     "@defichain/jellyfish-transaction-builder": ">=0.33.0",
+    "@defichain/testcontainers": ">=0.33.0",
     "@nestjs/common": "^7.6.15",
     "@nestjs/config": "^1.0.0",
     "@nestjs/core": "^7.6.15",
@@ -44,11 +45,11 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "@defichain/testcontainers": ">=0.33.0",
     "@nestjs/cli": "^8.0.2",
     "@nestjs/schematics": "^8.0.1",
     "@nestjs/testing": "^7.6.15",
     "@types/cron": "^1.7.2",
+    "@types/dockerode": "^3.2.7",
     "@types/jest": "^26.0.23",
     "@types/lossless-json": "^1.0.0",
     "@types/node": "^14.14.36",

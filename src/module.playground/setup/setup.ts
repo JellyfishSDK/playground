@@ -1,18 +1,10 @@
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { Injectable, Logger } from '@nestjs/common'
+import { GenesisKeys } from '@defichain/testcontainers'
 
 @Injectable()
 export abstract class PlaygroundSetup<Each> {
-  static MN_KEY = {
-    owner: {
-      address: 'mwsZw8nF7pKxWH8eoKL9tPxTpaFkz7QeLU',
-      privKey: 'cRiRQ9cHmy5evDqNDdEV8f6zfbK6epi9Fpz4CRZsmLEmkwy54dWz'
-    },
-    operator: {
-      address: 'mswsMVsyGMj1FzDMbbxw2QW3KvQAv2FKiy',
-      privKey: 'cPGEaz8AGiM71NGMRybbCqFNRcuUhg3uGvyY4TFE1BZC26EW2PkC'
-    }
-  }
+  static MN_KEY = GenesisKeys[0]
 
   /**
    * @return {string} address that should be used for everything
