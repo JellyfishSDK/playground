@@ -2,6 +2,7 @@ import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { createTestingApp, stopTestingApp } from '@src/e2e.module'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
+import BigNumber from 'bignumber.js'
 
 const container = new MasterNodeRegTestContainer()
 let client: JsonRpcClient
@@ -36,4 +37,15 @@ it('should have oracles setup', async () => {
 it('should have masternode setup', async () => {
   const oracles = await client.masternode.listMasternodes()
   expect(Object.values(oracles).length).toBe(10)
+})
+
+it('should not have minted more than 200 blocks', async () => {
+  const count = await client.blockchain.getBlockCount()
+  expect(count).toBeLessThanOrEqual(200)
+})
+
+it('should have at least 199 million in balance', async () => {
+  const m199 = new BigNumber('199100100')
+  const balances = await client.wallet.getBalances()
+  expect(balances.mine.trusted.isGreaterThan(m199)).toStrictEqual(true)
 })
