@@ -64,8 +64,8 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     }
 
     for (const genesisKey of GenesisKeys) {
-      await this.client.wallet.importPrivKey(genesisKey.owner.privKey, undefined, false)
-      await this.client.wallet.importPrivKey(genesisKey.operator.privKey, undefined, false)
+      await this.client.wallet.importPrivKey(genesisKey.owner.privKey, undefined, true)
+      await this.client.wallet.importPrivKey(genesisKey.operator.privKey, undefined, true)
     }
   }
 
