@@ -1,8 +1,11 @@
 import { PlaygroundApiException } from './api.error'
 import { PlaygroundApiResponse } from '../playground.api.response'
+import { Logger } from '@nestjs/common'
 
 export * from './api.error'
 export * from './client.timeout.exception'
+
+const logger = new Logger(PlaygroundApiException.name)
 
 /**
  * @param {PlaygroundApiResponse} response to check and raise error if any
@@ -14,5 +17,6 @@ export function raiseIfError (response: PlaygroundApiResponse<any>): void {
     return
   }
 
+  logger.error(error)
   throw new PlaygroundApiException(error)
 }
