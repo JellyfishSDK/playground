@@ -21,12 +21,12 @@ afterAll(async () => {
 
 it('should have pool pairs setup', async () => {
   const pairs = await client.poolpair.listPoolPairs()
-  expect(Object.values(pairs).length).toBe(4)
+  expect(Object.values(pairs).length).toBe(5)
 })
 
 it('should have tokens setup', async () => {
   const tokens = await client.token.listTokens()
-  expect(Object.values(tokens).length).toBe(9)
+  expect(Object.values(tokens).length).toBe(11)
 })
 
 it('should have oracles setup', async () => {
