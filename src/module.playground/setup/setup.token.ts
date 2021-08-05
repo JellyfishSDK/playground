@@ -54,6 +54,17 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
           collateralAddress: PlaygroundSetup.address
         },
         amount: 100000
+      },
+      {
+        create: {
+          symbol: 'USDC',
+          name: 'Playground USDC',
+          isDAT: true,
+          mintable: true,
+          tradeable: true,
+          collateralAddress: PlaygroundSetup.address
+        },
+        amount: 200000000
       }
     ]
   }

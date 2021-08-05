@@ -78,6 +78,22 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         utxoToAccount: {
           [PlaygroundSetup.address]: '100@0'
         }
+      },
+      {
+        symbol: 'DFI-USDC',
+        create: {
+          tokenA: 'DFI',
+          tokenB: 'USDC',
+          commission: 0,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        },
+        add: {
+          '*': ['2000@DFI', '20000000@USDC']
+        },
+        utxoToAccount: {
+          [PlaygroundSetup.address]: '2000@0'
+        }
       }
     ]
   }
