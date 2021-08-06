@@ -115,7 +115,11 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
 
   async has (each: PoolPairSetup): Promise<boolean> {
     try {
-      await this.client.poolpair.getPoolPair(each.symbol)
+      const poolPair = await this.client.poolpair.getPoolPair(each.symbol)
+      const poolPairId = parseInt(Object.keys(poolPair)[0])
+      // '1' fairly divided by current 5 poolpairs -> 0.2
+      await this.client.masternode.setGov({ LP_SPLITS: { [poolPairId]: 0.2 } })
+      await this.generate(1)
       return true
     } catch (e) {
       return false
