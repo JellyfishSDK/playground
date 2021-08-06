@@ -92,7 +92,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
     }
   }
 
-  async before (): Promise<void> {}
+  async before (list: OracleSetup[]): Promise<void> {}
 
-  async after (): Promise<void> {}
+  async after (list: OracleSetup[]): Promise<void> {}
 }
