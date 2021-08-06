@@ -91,4 +91,8 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
       return false
     }
   }
+
+  async before (): Promise<void> {}
+
+  async after (): Promise<void> {}
 }

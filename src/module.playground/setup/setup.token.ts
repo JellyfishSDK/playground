@@ -86,4 +86,8 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
       return false
     }
   }
+
+  async before (): Promise<void> {}
+
+  async after (): Promise<void> {}
 }
