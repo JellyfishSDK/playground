@@ -33,8 +33,4 @@ export class SetupMasternode extends PlaygroundSetup<MasternodeSetup> {
     return Object.values(nodes)
       .find(value => value.ownerAuthAddress === each.address) !== undefined
   }
-
-  async before (list: MasternodeSetup[]): Promise<void> {}
-
-  async after (list: MasternodeSetup[]): Promise<void> {}
 }

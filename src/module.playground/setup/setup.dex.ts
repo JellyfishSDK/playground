@@ -122,8 +122,6 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
     }
   }
 
-  async before (list: PoolPairSetup[]): Promise<void> {}
-
   async after (list: PoolPairSetup[]): Promise<void> {
     const poolPairs = await this.client.poolpair.listPoolPairs()
     const poolPairIds = Object.keys(poolPairs)

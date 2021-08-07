@@ -46,12 +46,14 @@ export abstract class PlaygroundSetup<Each> {
   /**
    * Before creating each, optionally execute something
    */
-  abstract before (list: Each[]): Promise<void>
+  protected async before (list: Each[]): Promise<void> {
+  }
 
   /**
    * After creating each, optionally execute something
    */
-  abstract after (list: Each[]): Promise<void>
+  protected async after (list: Each[]): Promise<void> {
+  }
 
   /**
    * @return {Each[]} to setup
