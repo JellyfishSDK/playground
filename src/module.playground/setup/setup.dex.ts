@@ -121,4 +121,18 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
       return false
     }
   }
+
+  async after (list: PoolPairSetup[]): Promise<void> {
+    const poolPairs = await this.client.poolpair.listPoolPairs()
+    const poolPairIds = Object.keys(poolPairs)
+    const splits = 1 / poolPairIds.length
+
+    const lpSplits: any = {}
+    for (const k in poolPairs) {
+      lpSplits[parseInt(k)] = splits
+    }
+
+    await this.client.masternode.setGov({ LP_SPLITS: lpSplits })
+    await this.generate(1)
+  }
 }

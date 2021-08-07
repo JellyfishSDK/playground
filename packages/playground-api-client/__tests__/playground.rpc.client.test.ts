@@ -55,4 +55,13 @@ describe('whitelisted rpc methods', () => {
     expect(block.hash.length).toStrictEqual(64)
     expect(Array.isArray(block.tx)).toStrictEqual(true)
   })
+
+  it('should client.poolpair.listPoolPairs()', async () => {
+    const poolPairs = await client.poolpair.listPoolPairs()
+    expect(Object.keys(poolPairs).length > 0).toBeTruthy()
+    for (const k in poolPairs) {
+      const poolPair = poolPairs[k]
+      expect(poolPair.rewardPct.gt(0)).toBeTruthy()
+    }
+  })
 })
