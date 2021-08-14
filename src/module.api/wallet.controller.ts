@@ -57,7 +57,8 @@ export class WalletController {
     const txn = createUtxoToAccountTxn(amount, address)
     const hex = new CTransaction(txn).toHex()
 
-    const { hex: funded } = await this.client.call('fundrawtransaction', [hex, { lockUnspents: true }], 'number')
+    const fundOptions = { lockUnspents: true, changePosition: 1 }
+    const { hex: funded } = await this.client.call('fundrawtransaction', [hex, fundOptions], 'number')
     const { hex: signed } = await this.client.call('signrawtransactionwithwallet', [funded], 'number')
     return await this.client.rawtx.sendRawTransaction(signed)
   }
