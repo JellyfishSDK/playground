@@ -3,7 +3,6 @@
 
 /.github/                                       @fuxingloh
 /.husky/                                        @fuxingloh
-/.idea/                                         @fuxingloh
 
 /packages/                                      @fuxingloh
 /packages/playground-api-client/                @fuxingloh @canonbrother @thedoublejay @ivan-zynesis
