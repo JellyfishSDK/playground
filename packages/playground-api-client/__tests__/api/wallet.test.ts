@@ -2,6 +2,8 @@ import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { PlaygroundApiClient } from '../../src'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
+import { Bech32, Elliptic } from '@defichain/jellyfish-crypto'
+import waitForExpect from 'wait-for-expect'
 
 let container: MasterNodeRegTestContainer
 let service: StubService
@@ -46,30 +48,45 @@ it('should get wallet', async () => {
   })
 })
 
-it('should dfi token send to address and wait for automated block confirmation (deprecated in favor of "wallet/tokens/0/sendtoaddress")', async () => {
-  const address = 'bcrt1qgpu5k3v66qjf8lc4p4lny0uwdxv6vf94axnjkf'
+describe('tokens', () => {
+  it('should send token 0 to address and wait for automated block confirmation', async () => {
+    const address = 'bcrt1qkt7rvkzk8qs7rk54vghrtzcdxfqazscmmp30hk'
 
-  const txId = await client.wallet.sendTokenDfiToAddress({
-    address: address,
-    amount: '10'
+    const txid = await client.wallet.sendToken('0', '15.99134567', address)
+    expect(txid.length).toStrictEqual(64)
+
+    await waitForExpect(async () => {
+      const balances = await container.call('getaccount', [address])
+      expect(balances).toStrictEqual(['15.99134567@DFI'])
+    })
   })
 
-  expect(txId.length).toStrictEqual(64)
+  it('should send token 1 to address and wait for confirmation', async () => {
+    const address = 'bcrt1qur2tmednr6e52u9du972nqvua60egwqkf98ps8'
+    const txid = await client.wallet.sendToken('1', '1.2343134', address)
+    expect(txid.length).toStrictEqual(64)
 
-  const balances = await container.call('getaccount', [address])
-  expect(balances).toStrictEqual(['10.00000000@DFI'])
-})
-
-it('should send token 0 to address and wait for automated block confirmation', async () => {
-  const address = 'bcrt1qkt7rvkzk8qs7rk54vghrtzcdxfqazscmmp30hk'
-
-  const txId: string = await client.requestData('POST', 'wallet/tokens/0/sendtoaddress', {
-    address: address,
-    amount: '15.99134567'
+    await waitForExpect(async () => {
+      const balances = await container.call('getaccount', [address])
+      expect(balances).toStrictEqual(['1.23431340@BTC'])
+    })
   })
 
-  expect(txId.length).toStrictEqual(64)
+  it('should keep sending 10.00000000@DFI to address x30 times', async () => {
+    const promises = [...Array(30).keys()].map(async () => {
+      const pair = Elliptic.fromPrivKey(Buffer.alloc(32, Math.random().toString(), 'ascii'))
+      const pubKey = await pair.publicKey()
+      const address = Bech32.fromPubKey(pubKey, 'bcrt')
 
-  const balances = await container.call('getaccount', [address])
-  expect(balances).toStrictEqual(['15.99134567@DFI'])
+      const txid = await client.wallet.sendToken('0', '10', address)
+      expect(txid.length).toStrictEqual(64)
+
+      await waitForExpect(async () => {
+        const balances = await container.call('getaccount', [address])
+        expect(balances).toStrictEqual(['10.00000000@DFI'])
+      })
+    })
+
+    await Promise.all(promises)
+  })
 })
