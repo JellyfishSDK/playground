@@ -3,7 +3,7 @@ import { PlaygroundApiClient } from '../../src'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
 import { Bech32, Elliptic } from '@defichain/jellyfish-crypto'
-import waitForExpect from 'wait-for-expect'
+import crypto from 'crypto'
 
 let container: MasterNodeRegTestContainer
 let service: StubService
@@ -55,10 +55,30 @@ describe('tokens', () => {
     const txid = await client.wallet.sendToken('0', '15.99134567', address)
     expect(txid.length).toStrictEqual(64)
 
-    await waitForExpect(async () => {
-      const balances = await container.call('getaccount', [address])
-      expect(balances).toStrictEqual(['15.99134567@DFI'])
+    const balances = await container.call('getaccount', [address])
+    expect(balances).toStrictEqual(['15.99134567@DFI'])
+  })
+
+  it('should keep sending 10.00000000@DFI to address x30 times', async () => {
+    const addresses = await generateAddress(30)
+    const promises = addresses.map(async address => {
+      const txid = await client.wallet.sendToken('0', '10', address)
+      expect(txid.length).toStrictEqual(64)
+
+      const balances: string[] = await container.call('getaccount', [address])
+      return balances[0]
     })
+
+    const all: string[] = await Promise.all(promises)
+    const total = all.reduce((prev, c) => {
+      if (c === undefined) {
+        return prev
+      }
+      const [amount] = c.split('@')
+      return prev + Number(amount)
+    }, 0)
+
+    expect(total).toStrictEqual(300)
   })
 
   it('should send token 1 to address and wait for confirmation', async () => {
@@ -66,27 +86,24 @@ describe('tokens', () => {
     const txid = await client.wallet.sendToken('1', '1.2343134', address)
     expect(txid.length).toStrictEqual(64)
 
-    await waitForExpect(async () => {
-      const balances = await container.call('getaccount', [address])
-      expect(balances).toStrictEqual(['1.23431340@BTC'])
-    })
+    const balances = await container.call('getaccount', [address])
+    expect(balances).toStrictEqual(['1.23431340@BTC'])
   })
 
-  it('should keep sending 10.00000000@DFI to address x30 times', async () => {
-    const promises = [...Array(30).keys()].map(async () => {
-      const pair = Elliptic.fromPrivKey(Buffer.alloc(32, Math.random().toString(), 'ascii'))
-      const pubKey = await pair.publicKey()
-      const address = Bech32.fromPubKey(pubKey, 'bcrt')
+  it('should send token 2 to address and wait for confirmation', async () => {
+    const address = 'bcrt1qhu2pkzfx4gc8r5nry89ma9xvvt6rz0r4xe5yyw'
+    const txid = await client.wallet.sendToken('2', '1.500', address)
+    expect(txid.length).toStrictEqual(64)
 
-      const txid = await client.wallet.sendToken('0', '10', address)
-      expect(txid.length).toStrictEqual(64)
-
-      await waitForExpect(async () => {
-        const balances = await container.call('getaccount', [address])
-        expect(balances).toStrictEqual(['10.00000000@DFI'])
-      })
-    })
-
-    await Promise.all(promises)
+    const balances = await container.call('getaccount', [address])
+    expect(balances).toStrictEqual(['1.50000000@ETH'])
   })
 })
+
+async function generateAddress (n: number): Promise<string[]> {
+  return await Promise.all([...Array(n).keys()].map(async () => {
+    const pair = Elliptic.fromPrivKey(crypto.randomBytes(32))
+    const pubKey = await pair.publicKey()
+    return Bech32.fromPubKey(pubKey, 'bcrt')
+  }))
+}

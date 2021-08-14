@@ -4,6 +4,7 @@ import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { SendToken, WalletBalances } from '@playground-api-client/api/wallet'
 import { CTransaction, DeFiTransactionConstants, OP_CODES, Transaction, Vout } from '@defichain/jellyfish-transaction'
 import { DeFiAddress } from '@defichain/jellyfish-address'
+import { waitForCondition } from '@defichain/testcontainers/dist/wait_for_condition'
 
 @Controller('/v0/playground/wallet')
 export class WalletController {
@@ -56,30 +57,16 @@ export class WalletController {
     const txn = createUtxoToAccountTxn(amount, address)
     const hex = new CTransaction(txn).toHex()
 
-    const { hex: funded } = await this.client.call('fundrawtransaction', [hex], 'number')
+    const { hex: funded } = await this.client.call('fundrawtransaction', [hex, { lockUnspents: true }], 'number')
     const { hex: signed } = await this.client.call('signrawtransactionwithwallet', [funded], 'number')
     return await this.client.rawtx.sendRawTransaction(signed)
   }
 
-  async waitConfirmation (txId: string, timeout: number = 10000): Promise<void> {
-    /* eslint-disable no-void */
-    const expiredAt = Date.now() + timeout
-
-    return await new Promise((resolve, reject) => {
-      const checkCondition = async (): Promise<void> => {
-        const { confirmations } = await this.client.rawtx.getRawTransaction(txId, true)
-        if (confirmations > 0) {
-          resolve()
-        } else if (expiredAt < Date.now()) {
-          reject(new Error('waitConfirmation timeout after 10 seconds'))
-        } else {
-          setTimeout(() => void checkCondition(), 250)
-        }
-      }
-
-      void checkCondition()
-    })
-    /* eslint-enable no-void */
+  async waitConfirmation (txid: string, timeout: number = 30000): Promise<void> {
+    await waitForCondition(async () => {
+      const txn = await this.client.rawtx.getRawTransaction(txid, true)
+      return txn.confirmations > 0
+    }, timeout, 500)
   }
 }
 
