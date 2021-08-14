@@ -8,10 +8,12 @@ import { PlaygroundBlock } from '@src/module.playground/playground.block'
 import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 import { GenesisKeys } from '@defichain/testcontainers'
 import { SetupMasternode } from '@src/module.playground/setup/setup.masternode'
+import { SetupUtxo } from '@src/module.playground/setup/setup.utxo'
 
 @Global()
 @Module({
   providers: [
+    SetupUtxo,
     SetupToken,
     SetupDex,
     SetupOracle,
@@ -31,12 +33,14 @@ export class PlaygroundModule implements OnApplicationBootstrap {
   constructor (
     private readonly client: JsonRpcClient,
     private readonly indicator: PlaygroundProbeIndicator,
+    utxo: SetupUtxo,
     token: SetupToken,
     dex: SetupDex,
     oracle: SetupOracle,
     masternode: SetupMasternode
   ) {
     this.setups = [
+      utxo,
       token,
       dex,
       oracle,
