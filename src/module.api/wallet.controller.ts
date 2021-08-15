@@ -1,19 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
-import { TokenDfiToAddress, WalletBalances } from '@playground-api-client/api/wallet'
-import { PlaygroundSetup } from '@src/module.playground/setup/setup'
-import {
-  CTransaction,
-  DeFiTransactionConstants,
-  OP_CODES,
-  Script,
-  Transaction,
-  Vin,
-  Vout
-} from '@defichain/jellyfish-transaction'
+import { SendTo, WalletBalances } from '@playground-api-client/api/wallet'
+import { CTransaction, DeFiTransactionConstants, OP_CODES, Transaction, Vout } from '@defichain/jellyfish-transaction'
 import { DeFiAddress } from '@defichain/jellyfish-address'
-import { UTXO } from '@defichain/jellyfish-api-core/dist/category/wallet'
+import { waitForCondition } from '@defichain/testcontainers/dist/wait_for_condition'
 
 @Controller('/v0/playground/wallet')
 export class WalletController {
@@ -44,97 +35,73 @@ export class WalletController {
    * @deprecated
    */
   @Post('/tokens/dfi/sendtoaddress')
-  async postDFIFallback (@Body() data: TokenDfiToAddress): Promise<string> {
-    return await this.post(data)
+  async postDFIFallback (@Body() data: SendTo): Promise<string> {
+    return await this.sendToken('0', data)
   }
 
-  @Post('/tokens/0/sendtoaddress')
-  async post (@Body() data: TokenDfiToAddress): Promise<string> {
-    const amount = new BigNumber(data.amount)
-    const script = DeFiAddress.from('regtest', data.address).getScript()
-    const utxos = await this.queryUnspent(amount)
-
-    const transaction = this.createUtxoToAccountTransaction(amount, script, utxos)
-    const hex = new CTransaction(transaction).toHex()
-    const signed = await this.client.rawtx.signRawTransactionWithKey(hex, [PlaygroundSetup.privKey])
-    const txId = await this.client.rawtx.sendRawTransaction(signed.hex, new BigNumber('100'))
-
-    await this.waitConfirmation(txId)
-    return txId
+  @Post('/utxo/send')
+  async sendUtxo (@Param('id') tokenId: string, @Body() data: SendTo): Promise<string> {
+    const txid = await this.client.wallet.sendToAddress(data.address, Number(data.amount))
+    await this.waitConfirmation(txid)
+    return txid
   }
 
-  /**
-   * Get unspent to spend and locks it.
-   */
-  async queryUnspent (amount: BigNumber): Promise<UTXO[]> {
-    return await this.client.wallet.listUnspent(1, 9999999, {
-      addresses: [PlaygroundSetup.address],
-      includeUnsafe: false,
-      queryOptions: {
-        maximumCount: 100,
-        minimumSumAmount: amount.plus(1).toNumber()
-      }
-    })
-  }
-
-  createUtxoToAccountTransaction (amount: BigNumber, script: Script, utxos: UTXO[]): Transaction {
-    const utxoToAccount: Vout = {
-      value: amount,
-      script: {
-        stack: [
-          OP_CODES.OP_RETURN,
-          OP_CODES.OP_DEFI_TX_UTXOS_TO_ACCOUNT({
-            to: [{
-              script: script,
-              balances: [{ token: 0, amount: amount }]
-            }]
-          })
-        ]
-      },
-      tokenId: 0x00
+  @Post('/tokens/:id/send')
+  async sendToken (@Param('id') tokenId: string, @Body() data: SendTo): Promise<string> {
+    let txid: string
+    if (tokenId === '0') {
+      txid = await this.sendDfiToken(data.amount, data.address)
+    } else {
+      const to = { [data.address]: [`${data.amount}@${tokenId}`] }
+      txid = await this.client.account.sendTokensToAddress({}, to)
     }
 
-    const sum = utxos.reduce((acc, b) => acc.plus(b.amount), new BigNumber(0))
-    const change: Vout = {
-      value: sum.minus(amount).minus(0.00010000), // fixed fee
-      script: DeFiAddress.from('regtest', PlaygroundSetup.address).getScript(),
-      tokenId: 0x00
-    }
-
-    return {
-      version: DeFiTransactionConstants.Version,
-      vin: utxos.map((utxo): Vin => ({
-        index: utxo.vout,
-        script: DeFiAddress.from('regtest', utxo.address).getScript(),
-        sequence: 0xffffffff,
-        txid: utxo.txid
-      })),
-      vout: [
-        utxoToAccount,
-        change
-      ],
-      lockTime: 0x00000000
-    }
+    await this.waitConfirmation(txid)
+    return txid
   }
 
-  async waitConfirmation (txId: string): Promise<void> {
-    /* eslint-disable no-void */
-    const expiredAt = Date.now() + 10000 // 10 seconds
+  async sendDfiToken (amount: string, address: string): Promise<string> {
+    const txn = createUtxoToAccountTxn(amount, address)
+    const hex = new CTransaction(txn).toHex()
 
-    return await new Promise((resolve, reject) => {
-      const checkCondition = async (): Promise<void> => {
-        const { confirmations } = await this.client.rawtx.getRawTransaction(txId, true)
-        if (confirmations > 0) {
-          resolve()
-        } else if (expiredAt < Date.now()) {
-          reject(new Error('waitConfirmation timeout after 10 seconds'))
-        } else {
-          setTimeout(() => void checkCondition(), 500)
-        }
-      }
+    const fundOptions = { lockUnspents: true, changePosition: 1 }
+    const { hex: funded } = await this.client.call('fundrawtransaction', [hex, fundOptions], 'number')
+    const { hex: signed } = await this.client.call('signrawtransactionwithwallet', [funded], 'number')
+    return await this.client.rawtx.sendRawTransaction(signed)
+  }
 
-      void checkCondition()
-    })
-    /* eslint-enable no-void */
+  async waitConfirmation (txid: string, timeout: number = 30000): Promise<void> {
+    await waitForCondition(async () => {
+      const txn = await this.client.rawtx.getRawTransaction(txid, true)
+      return txn.confirmations > 0
+    }, timeout, 500)
+  }
+}
+
+function createUtxoToAccountTxn (amount: string, address: string): Transaction {
+  const value = new BigNumber(amount)
+  const script = DeFiAddress.from('regtest', address).getScript()
+
+  const utxoToAccount: Vout = {
+    value: value,
+    script: {
+      stack: [
+        OP_CODES.OP_RETURN,
+        OP_CODES.OP_DEFI_TX_UTXOS_TO_ACCOUNT({
+          to: [{
+            script: script,
+            balances: [{ token: 0, amount: value }]
+          }]
+        })
+      ]
+    },
+    tokenId: 0x00
+  }
+
+  return {
+    version: DeFiTransactionConstants.Version,
+    vin: [],
+    vout: [utxoToAccount],
+    lockTime: 0x00000000
   }
 }

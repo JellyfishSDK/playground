@@ -1,19 +1,16 @@
 import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
-import { PlaygroundApiClient } from '../../src'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
+import { Testing } from '@defichain/jellyfish-testing'
+import BigNumber from 'bignumber.js'
 
-let container: MasterNodeRegTestContainer
-let service: StubService
-let client: PlaygroundApiClient
+const container = new MasterNodeRegTestContainer()
+const testing = Testing.create(container)
+const service = new StubService(container)
+const client = new StubPlaygroundApiClient(service)
 
 beforeAll(async () => {
-  container = new MasterNodeRegTestContainer()
-  service = new StubService(container)
-  client = new StubPlaygroundApiClient(service)
-
   await container.start()
-  await container.waitForReady()
   await container.waitForWalletCoinbaseMaturity()
   await service.start()
 })
@@ -46,30 +43,58 @@ it('should get wallet', async () => {
   })
 })
 
-it('should dfi token send to address and wait for automated block confirmation (deprecated in favor of "wallet/tokens/0/sendtoaddress")', async () => {
-  const address = 'bcrt1qgpu5k3v66qjf8lc4p4lny0uwdxv6vf94axnjkf'
+describe('tokens', () => {
+  it('should send utxo to address and wait for automated block confirmation', async () => {
+    const address = await testing.generateAddress()
 
-  const txId = await client.wallet.sendTokenDfiToAddress({
-    address: address,
-    amount: '10'
+    const txid = await client.wallet.sendUtxo('19.34153143', address)
+    expect(txid.length).toStrictEqual(64)
+
+    const unspent = await testing.rpc.wallet.listUnspent(1, 999999, {
+      addresses: [address]
+    })
+
+    expect(unspent.length).toStrictEqual(1)
+    expect(unspent[0].address).toStrictEqual(address)
+    expect(unspent[0].amount).toStrictEqual(new BigNumber('19.34153143'))
   })
 
-  expect(txId.length).toStrictEqual(64)
+  it('should send token 0 to address and wait for automated block confirmation', async () => {
+    const address = 'bcrt1qkt7rvkzk8qs7rk54vghrtzcdxfqazscmmp30hk'
 
-  const balances = await container.call('getaccount', [address])
-  expect(balances).toStrictEqual(['10.00000000@DFI'])
-})
+    const txid = await client.wallet.sendToken('0', '15.99134567', address)
+    expect(txid.length).toStrictEqual(64)
 
-it('should send token 0 to address and wait for automated block confirmation', async () => {
-  const address = 'bcrt1qkt7rvkzk8qs7rk54vghrtzcdxfqazscmmp30hk'
-
-  const txId: string = await client.requestData('POST', 'wallet/tokens/0/sendtoaddress', {
-    address: address,
-    amount: '15.99134567'
+    const balances = await container.call('getaccount', [address])
+    expect(balances).toStrictEqual(['15.99134567@DFI'])
   })
 
-  expect(txId.length).toStrictEqual(64)
+  it('should keep sending 10@DFI to address x30 times', async () => {
+    const addresses = await testing.generateAddress(30)
+    await Promise.all(addresses.map(async address => {
+      const txid = await client.wallet.sendToken('0', '10', address)
+      expect(txid.length).toStrictEqual(64)
 
-  const balances = await container.call('getaccount', [address])
-  expect(balances).toStrictEqual(['15.99134567@DFI'])
+      const balances = await testing.rpc.account.getAccount(address)
+      expect(balances).toStrictEqual(['10.00000000@DFI'])
+    }))
+  })
+
+  it('should send token 1 to address and wait for confirmation', async () => {
+    const address = 'bcrt1qur2tmednr6e52u9du972nqvua60egwqkf98ps8'
+    const txid = await client.wallet.sendToken('1', '1.2343134', address)
+    expect(txid.length).toStrictEqual(64)
+
+    const balances = await container.call('getaccount', [address])
+    expect(balances).toStrictEqual(['1.23431340@BTC'])
+  })
+
+  it('should send token 2 to address and wait for confirmation', async () => {
+    const address = 'bcrt1qhu2pkzfx4gc8r5nry89ma9xvvt6rz0r4xe5yyw'
+    const txid = await client.wallet.sendToken('2', '1.500', address)
+    expect(txid.length).toStrictEqual(64)
+
+    const balances = await container.call('getaccount', [address])
+    expect(balances).toStrictEqual(['1.50000000@ETH'])
+  })
 })
