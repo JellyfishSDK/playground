@@ -2,6 +2,7 @@ import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
 import { Testing } from '@defichain/jellyfish-testing'
+import BigNumber from 'bignumber.js'
 
 const container = new MasterNodeRegTestContainer()
 const testing = Testing.create(container)
@@ -54,10 +55,8 @@ describe('tokens', () => {
     })
 
     expect(unspent.length).toStrictEqual(1)
-    expect(unspent[0]).toStrictEqual(expect.objectContaining({
-      amount: '19.34153143',
-      address: 'bcrt1q7ahfyta7m0ylppqv6gs2ghh2fc5ce9r6sjr0c6'
-    }))
+    expect(unspent[0].address).toStrictEqual(address)
+    expect(unspent[0].amount).toStrictEqual(new BigNumber('19.34153143'))
   })
 
   it('should send token 0 to address and wait for automated block confirmation', async () => {
