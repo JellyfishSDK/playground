@@ -43,6 +43,23 @@ it('should get wallet', async () => {
 })
 
 describe('tokens', () => {
+  it('should send utxo to address and wait for automated block confirmation', async () => {
+    const address = await testing.generateAddress()
+
+    const txid = await client.wallet.sendUtxo('19.34153143', address)
+    expect(txid.length).toStrictEqual(64)
+
+    const unspent = await testing.rpc.wallet.listUnspent(1, 999999, {
+      addresses: [address]
+    })
+
+    expect(unspent.length).toStrictEqual(1)
+    expect(unspent[0]).toStrictEqual(expect.objectContaining({
+      amount: '19.34153143',
+      address: 'bcrt1q7ahfyta7m0ylppqv6gs2ghh2fc5ce9r6sjr0c6'
+    }))
+  })
+
   it('should send token 0 to address and wait for automated block confirmation', async () => {
     const address = 'bcrt1qkt7rvkzk8qs7rk54vghrtzcdxfqazscmmp30hk'
 

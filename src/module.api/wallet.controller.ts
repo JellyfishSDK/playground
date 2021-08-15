@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
-import { SendToken, WalletBalances } from '@playground-api-client/api/wallet'
+import { SendTo, WalletBalances } from '@playground-api-client/api/wallet'
 import { CTransaction, DeFiTransactionConstants, OP_CODES, Transaction, Vout } from '@defichain/jellyfish-transaction'
 import { DeFiAddress } from '@defichain/jellyfish-address'
 import { waitForCondition } from '@defichain/testcontainers/dist/wait_for_condition'
@@ -35,12 +35,19 @@ export class WalletController {
    * @deprecated
    */
   @Post('/tokens/dfi/sendtoaddress')
-  async postDFIFallback (@Body() data: SendToken): Promise<string> {
-    return await this.post('0', data)
+  async postDFIFallback (@Body() data: SendTo): Promise<string> {
+    return await this.sendToken('0', data)
+  }
+
+  @Post('/utxo/send')
+  async sendUtxo (@Param('id') tokenId: string, @Body() data: SendTo): Promise<string> {
+    const txid = await this.client.wallet.sendToAddress(data.address, Number(data.amount))
+    await this.waitConfirmation(txid)
+    return txid
   }
 
   @Post('/tokens/:id/send')
-  async post (@Param('id') tokenId: string, @Body() data: SendToken): Promise<string> {
+  async sendToken (@Param('id') tokenId: string, @Body() data: SendTo): Promise<string> {
     let txid: string
     if (tokenId === '0') {
       txid = await this.sendDfiToken(data.amount, data.address)

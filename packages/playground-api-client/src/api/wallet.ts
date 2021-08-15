@@ -14,8 +14,20 @@ export class Wallet {
   /**
    * @deprecated use sendToken instead
    */
-  async sendTokenDfiToAddress (data: SendToken): Promise<string> {
+  async sendTokenDfiToAddress (data: SendTo): Promise<string> {
     return await this.sendToken('0', data.amount, data.address)
+  }
+
+  /**
+   * Send utxo to address, this method will wait for confirmation.
+   *
+   * @param {string} amount to send to address
+   * @param {string} address to send to
+   * @return {string} txid
+   */
+  async sendUtxo (amount: string, address: string): Promise<string> {
+    const data: SendTo = { amount, address }
+    return await this.client.requestData('POST', 'wallet/utxo/send', data)
   }
 
   /**
@@ -27,7 +39,7 @@ export class Wallet {
    * @return {string} txid
    */
   async sendToken (tokenId: string, amount: string, address: string): Promise<string> {
-    const data: SendToken = { amount, address }
+    const data: SendTo = { amount, address }
     return await this.client.requestData('POST', `wallet/tokens/${tokenId}/send`, data)
   }
 }
@@ -37,7 +49,7 @@ export interface WalletBalances {
   tokens: Array<{ id: string, balance: number }>
 }
 
-export interface SendToken {
+export interface SendTo {
   amount: string
   address: string
 }
