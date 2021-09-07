@@ -16,10 +16,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
     // MAX_SYMBOL_LENGTH = 8
     return [
       {
-        symbol: 'DFI-BTC',
+        symbol: 'BTC-DFI',
         create: {
-          tokenA: 'DFI',
-          tokenB: 'BTC',
+          tokenA: 'BTC',
+          tokenB: 'DFI',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
@@ -32,10 +32,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         }
       },
       {
-        symbol: 'DFI-ETH',
+        symbol: 'ETH-DFI',
         create: {
-          tokenA: 'DFI',
-          tokenB: 'ETH',
+          tokenA: 'ETH',
+          tokenB: 'DFI',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
@@ -48,10 +48,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         }
       },
       {
-        symbol: 'DFI-USDT',
+        symbol: 'USDT-DFI',
         create: {
-          tokenA: 'DFI',
-          tokenB: 'USDT',
+          tokenA: 'USDT',
+          tokenB: 'DFI',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
@@ -64,10 +64,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         }
       },
       {
-        symbol: 'DFI-LTC',
+        symbol: 'LTC-DFI',
         create: {
-          tokenA: 'DFI',
-          tokenB: 'LTC',
+          tokenA: 'LTC',
+          tokenB: 'DFI',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
@@ -80,10 +80,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         }
       },
       {
-        symbol: 'DFI-USDC',
+        symbol: 'USDC-DFI',
         create: {
-          tokenA: 'DFI',
-          tokenB: 'USDC',
+          tokenA: 'USDC',
+          tokenB: 'DFI',
           commission: 0,
           status: true,
           ownerAddress: PlaygroundSetup.address
