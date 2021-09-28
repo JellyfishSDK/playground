@@ -9,6 +9,7 @@ import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 import { GenesisKeys } from '@defichain/testcontainers'
 import { SetupMasternode } from '@src/module.playground/setup/setup.masternode'
 import { SetupUtxo } from '@src/module.playground/setup/setup.utxo'
+import { OracleBot } from './bot/oracle.bot'
 
 @Global()
 @Module({
@@ -18,6 +19,7 @@ import { SetupUtxo } from '@src/module.playground/setup/setup.utxo'
     SetupDex,
     SetupOracle,
     SetupMasternode,
+    OracleBot,
     PlaygroundBlock,
     PlaygroundProbeIndicator
   ],
