@@ -1,5 +1,5 @@
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { GenesisKeys } from '@defichain/testcontainers'
 import { Interval } from '@nestjs/schedule'
 
@@ -21,8 +21,6 @@ export abstract class PlaygroundBot<Each> {
     return PlaygroundBot.MN_KEY.operator.privKey
   }
 
-  private readonly logger = new Logger(PlaygroundBot.name)
-
   constructor (protected readonly client: JsonRpcClient) {
   }
 
@@ -30,6 +28,10 @@ export abstract class PlaygroundBot<Each> {
   async runAll (): Promise<void> {
     const list = this.list()
     for (const each of list) {
+      if (!await this.has(each)) {
+        continue
+      }
+
       await this.run(each)
     }
   }
@@ -43,4 +45,9 @@ export abstract class PlaygroundBot<Each> {
    * @param {Each} each to run
    */
   abstract run (each: Each): Promise<void>
+
+  /**
+   * @param {Each} each to check if it exists so we can run.
+   */
+  abstract has (each: Each): Promise<boolean>
 }

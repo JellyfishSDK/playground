@@ -140,7 +140,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
     const oracleId = await this.client.oracle.appointOracle(each.address, each.priceFeeds, each.options)
 
     for (const { token } of each.priceFeeds) {
-      this.oracleIds[token].push(oracleId)
+      this.oracleIds[token] = [...(this.oracleIds[token] ?? []), oracleId]
     }
 
     await this.generate(1)
@@ -148,7 +148,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
 
   async has (each: OracleSetup): Promise<boolean> {
     try {
-      return (await this.client.oracle.listOracles()).length >= 3
+      return (await this.client.oracle.listOracles()).length >= this.list().length
     } catch (e) {
       return false
     }

@@ -138,11 +138,11 @@ export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
     ]
   }
 
-  private async sendInitial (oracleId: string, medianTime: number, price: BigNumber): Promise<void> {
+  private async sendInitial (oracleId: string, medianTime: number, each: SimulatedOracleFeed): Promise<void> {
     await this.client.oracle.setOracleData(oracleId, medianTime, {
       prices: [
         {
-          tokenAmount: price.toFixed(8),
+          tokenAmount: `${each.startingPrice.toFixed(8)}@${each.token}`,
           currency: 'USD'
         }
       ]
@@ -158,7 +158,7 @@ export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
       const tokenPrice = oracleData.tokenPrices.find(x => x.token === each.token)
 
       if (tokenPrice === undefined) {
-        await this.sendInitial(oracleId, medianTime, each.startingPrice)
+        await this.sendInitial(oracleId, medianTime, each)
         continue
       }
 
@@ -173,11 +173,16 @@ export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
       await this.client.oracle.setOracleData(oracleId, medianTime, {
         prices: [
           {
-            tokenAmount: newPrice.toFixed(8),
+            tokenAmount: `${newPrice.toFixed(8)}@${each.token}`,
             currency: 'USD'
           }
         ]
       })
     }
+  }
+
+  async has (each: SimulatedOracleFeed): Promise<boolean> {
+    const oracleIds = this.setupOracle.oracleIds[each.token]
+    return oracleIds !== undefined
   }
 }
