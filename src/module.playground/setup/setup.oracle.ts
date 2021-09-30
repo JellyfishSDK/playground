@@ -11,7 +11,7 @@ interface OracleSetup {
 
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
-  oracleOwnerAddress: string = GenesisKeys[7].operator.address
+  oracleOwnerAddress: string = GenesisKeys[0].owner.address
   oracleIds: Record<string, string[]> = {}
 
   list (): OracleSetup[] {
@@ -80,6 +80,10 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
         address: this.oracleOwnerAddress,
         priceFeeds: [
           {
+            token: 'U10',
+            currency: 'USD'
+          },
+          {
             token: 'U25',
             currency: 'USD'
           },
@@ -88,7 +92,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
             currency: 'USD'
           },
           {
-            token: 'U100',
+            token: 'D10',
             currency: 'USD'
           },
           {
@@ -97,10 +101,6 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
           },
           {
             token: 'D50',
-            currency: 'USD'
-          },
-          {
-            token: 'D100',
             currency: 'USD'
           },
           {

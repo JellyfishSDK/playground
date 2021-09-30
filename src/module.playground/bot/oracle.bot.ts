@@ -5,9 +5,27 @@ import { PlaygroundBot } from './bot'
 import { SetupOracle } from '../setup/setup.oracle'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 
+/**
+ * The following symbols are automated by this bot:
+ * - U10: Goes up every 15 seconds by 10%
+ * - U25: Goes up every 15 seconds by 25%
+ * - U50: Goes up every 15 seconds by 50%
+ * - D10: Goes down every 15 seconds by 10%
+ * - D25: Goes down every 15 seconds by 25%
+ * - D50: Goes down every 15 seconds by 50%
+ * - S25: Is always $25
+ * - S50: Is always $50
+ * - S100: Is always $100
+ * - R25: Goes down every 15 seconds by $25
+ * - R50: Goes down every 15 seconds by $50
+ * - R100: Goes down every 15 seconds by $100
+ */
+
 enum PriceDirection {
-  UP, // Always going up
-  DOWN, // Always going down
+  UP_ABSOLUTE, // Always going up (absolute value)
+  DOWN_ABSOLUTE, // Always going down (absolute value)
+  UP_PERCENTAGE, // Always going up (percentage value)
+  DOWN_PERCENTAGE, // Always going down (percentage value)
   RANDOM, // Randomly goes up or down (minimum $1)
   STABLE // Fixed value
 }
@@ -15,11 +33,17 @@ enum PriceDirection {
 type PriceDirectionFunction = (price: BigNumber, priceChange: BigNumber) => BigNumber
 
 const PriceDirectionFunctions: Record<PriceDirection, PriceDirectionFunction> = {
-  [PriceDirection.UP]: (price: BigNumber, priceChange: BigNumber) => {
+  [PriceDirection.UP_ABSOLUTE]: (price: BigNumber, priceChange: BigNumber) => {
     return price.plus(priceChange)
   },
-  [PriceDirection.DOWN]: (price: BigNumber, priceChange: BigNumber) => {
+  [PriceDirection.DOWN_ABSOLUTE]: (price: BigNumber, priceChange: BigNumber) => {
     return price.minus(priceChange)
+  },
+  [PriceDirection.UP_PERCENTAGE]: (price: BigNumber, priceChange: BigNumber) => {
+    return price.plus(price.times(priceChange.dividedBy(100)))
+  },
+  [PriceDirection.DOWN_PERCENTAGE]: (price: BigNumber, priceChange: BigNumber) => {
+    return price.minus(price.times(priceChange.dividedBy(100)))
   },
   [PriceDirection.RANDOM]: (price: BigNumber, priceChange: BigNumber) => {
     return BigNumber.random().gt(0.5)
@@ -41,7 +65,7 @@ interface SimulatedOracleFeed {
 
 @Injectable()
 export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
-  oracleOwnerAddress: string = GenesisKeys[7].operator.address
+  oracleOwnerAddress: string = GenesisKeys[0].owner.address
 
   constructor (
     protected readonly client: JsonRpcClient,
@@ -52,46 +76,46 @@ export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
   list (): SimulatedOracleFeed[] {
     return [
       {
+        token: 'U10',
+        startingPrice: new BigNumber(10),
+        priceChange: new BigNumber(10),
+        timeInterval: 15000,
+        priceDirection: PriceDirection.UP_PERCENTAGE
+      },
+      {
         token: 'U25',
-        startingPrice: new BigNumber(100),
+        startingPrice: new BigNumber(10),
         priceChange: new BigNumber(25),
         timeInterval: 15000,
-        priceDirection: PriceDirection.UP
+        priceDirection: PriceDirection.UP_PERCENTAGE
       },
       {
         token: 'U50',
-        startingPrice: new BigNumber(100),
+        startingPrice: new BigNumber(10),
         priceChange: new BigNumber(50),
         timeInterval: 15000,
-        priceDirection: PriceDirection.UP
+        priceDirection: PriceDirection.UP_PERCENTAGE
       },
       {
-        token: 'U100',
-        startingPrice: new BigNumber(100),
-        priceChange: new BigNumber(50),
+        token: 'D10',
+        startingPrice: new BigNumber(10000000),
+        priceChange: new BigNumber(10),
         timeInterval: 15000,
-        priceDirection: PriceDirection.UP
+        priceDirection: PriceDirection.DOWN_PERCENTAGE
       },
       {
         token: 'D25',
         startingPrice: new BigNumber(10000000),
         priceChange: new BigNumber(25),
         timeInterval: 15000,
-        priceDirection: PriceDirection.DOWN
+        priceDirection: PriceDirection.DOWN_PERCENTAGE
       },
       {
         token: 'D50',
         startingPrice: new BigNumber(10000000),
         priceChange: new BigNumber(50),
         timeInterval: 15000,
-        priceDirection: PriceDirection.DOWN
-      },
-      {
-        token: 'D100',
-        startingPrice: new BigNumber(10000000),
-        priceChange: new BigNumber(50),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.DOWN
+        priceDirection: PriceDirection.DOWN_PERCENTAGE
       },
       {
         token: 'S25',
