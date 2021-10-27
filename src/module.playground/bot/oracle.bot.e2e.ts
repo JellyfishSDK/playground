@@ -23,7 +23,7 @@ afterAll(async () => {
 describe('oracle bot', () => {
   it('should change oracle price', async () => {
     const oracles = await client.oracle.listOracles()
-    expect(Object.values(oracles).length).toBe(4)
+    expect(Object.values(oracles).length).toBe(6)
 
     // Wait for block 157
     await waitForExpect(async () => {
