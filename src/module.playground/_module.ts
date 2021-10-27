@@ -10,6 +10,7 @@ import { GenesisKeys } from '@defichain/testcontainers'
 import { SetupMasternode } from '@src/module.playground/setup/setup.masternode'
 import { SetupUtxo } from '@src/module.playground/setup/setup.utxo'
 import { OracleBot } from './bot/oracle.bot'
+import { SetupLoanScheme } from '@src/module.playground/setup/setup.loan.scheme'
 
 @Global()
 @Module({
@@ -19,6 +20,7 @@ import { OracleBot } from './bot/oracle.bot'
     SetupDex,
     SetupOracle,
     SetupMasternode,
+    SetupLoanScheme,
     OracleBot,
     PlaygroundBlock,
     PlaygroundProbeIndicator
@@ -39,14 +41,16 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     token: SetupToken,
     dex: SetupDex,
     oracle: SetupOracle,
-    masternode: SetupMasternode
+    masternode: SetupMasternode,
+    loanScheme: SetupLoanScheme
   ) {
     this.setups = [
       utxo,
       token,
       dex,
       oracle,
-      masternode
+      masternode,
+      loanScheme
     ]
   }
 
