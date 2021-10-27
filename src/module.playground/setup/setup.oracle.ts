@@ -9,6 +9,72 @@ interface OracleSetup {
   options: AppointOracleOptions
 }
 
+const STOCKS: OraclePriceFeed[] = [
+  {
+    token: 'TSLA',
+    currency: 'USD'
+  },
+  {
+    token: 'AAPL',
+    currency: 'USD'
+  },
+  {
+    token: 'FB',
+    currency: 'USD'
+  }
+]
+
+const BOTS: OraclePriceFeed[] = [
+  {
+    token: 'U10',
+    currency: 'USD'
+  },
+  {
+    token: 'U25',
+    currency: 'USD'
+  },
+  {
+    token: 'U50',
+    currency: 'USD'
+  },
+  {
+    token: 'D10',
+    currency: 'USD'
+  },
+  {
+    token: 'D25',
+    currency: 'USD'
+  },
+  {
+    token: 'D50',
+    currency: 'USD'
+  },
+  {
+    token: 'R25',
+    currency: 'USD'
+  },
+  {
+    token: 'R50',
+    currency: 'USD'
+  },
+  {
+    token: 'R100',
+    currency: 'USD'
+  },
+  {
+    token: 'S25',
+    currency: 'USD'
+  },
+  {
+    token: 'S50',
+    currency: 'USD'
+  },
+  {
+    token: 'S100',
+    currency: 'USD'
+  }
+]
+
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
   oracleOwnerAddress: string = GenesisKeys[0].owner.address
@@ -18,116 +84,42 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
     return [
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: [
-          {
-            token: 'TSLA',
-            currency: 'USD'
-          },
-          {
-            token: 'AAPL',
-            currency: 'USD'
-          },
-          {
-            token: 'FB',
-            currency: 'USD'
-          }
-        ],
+        priceFeeds: STOCKS,
         options: {
           weightage: 1
         }
       },
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: [
-          {
-            token: 'TSLA',
-            currency: 'USD'
-          },
-          {
-            token: 'AAPL',
-            currency: 'USD'
-          },
-          {
-            token: 'FB',
-            currency: 'USD'
-          }
-        ],
+        priceFeeds: STOCKS,
         options: {
           weightage: 1
         }
       },
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: [
-          {
-            token: 'TSLA',
-            currency: 'USD'
-          },
-          {
-            token: 'AAPL',
-            currency: 'USD'
-          },
-          {
-            token: 'FB',
-            currency: 'USD'
-          }
-        ],
+        priceFeeds: STOCKS,
         options: {
           weightage: 1
         }
       },
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: [
-          {
-            token: 'U10',
-            currency: 'USD'
-          },
-          {
-            token: 'U25',
-            currency: 'USD'
-          },
-          {
-            token: 'U50',
-            currency: 'USD'
-          },
-          {
-            token: 'D10',
-            currency: 'USD'
-          },
-          {
-            token: 'D25',
-            currency: 'USD'
-          },
-          {
-            token: 'D50',
-            currency: 'USD'
-          },
-          {
-            token: 'R25',
-            currency: 'USD'
-          },
-          {
-            token: 'R50',
-            currency: 'USD'
-          },
-          {
-            token: 'R100',
-            currency: 'USD'
-          },
-          {
-            token: 'S25',
-            currency: 'USD'
-          },
-          {
-            token: 'S50',
-            currency: 'USD'
-          },
-          {
-            token: 'S100',
-            currency: 'USD'
-          }
-        ],
+        priceFeeds: BOTS,
+        options: {
+          weightage: 1
+        }
+      },
+      {
+        address: this.oracleOwnerAddress,
+        priceFeeds: BOTS,
+        options: {
+          weightage: 1
+        }
+      },
+      {
+        address: this.oracleOwnerAddress,
+        priceFeeds: BOTS,
         options: {
           weightage: 1
         }

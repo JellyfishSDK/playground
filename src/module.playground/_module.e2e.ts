@@ -31,7 +31,7 @@ it('should have tokens setup', async () => {
 
 it('should have oracles setup', async () => {
   const oracles = await client.oracle.listOracles()
-  expect(Object.values(oracles).length).toBe(4)
+  expect(Object.values(oracles).length).toBe(6)
 })
 
 it('should have masternode setup', async () => {

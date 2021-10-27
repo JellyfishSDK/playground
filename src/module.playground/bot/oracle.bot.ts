@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { GenesisKeys } from '@defichain/testcontainers'
 import { BigNumber } from '@defichain/jellyfish-json'
 import { PlaygroundBot } from './bot'
 import { SetupOracle } from '../setup/setup.oracle'
@@ -20,7 +19,6 @@ import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
  * - R50: Goes down every 15 seconds by $50
  * - R100: Goes down every 15 seconds by $100
  */
-
 enum PriceDirection {
   UP_ABSOLUTE, // Always going up (absolute value)
   DOWN_ABSOLUTE, // Always going down (absolute value)
@@ -65,8 +63,6 @@ interface SimulatedOracleFeed {
 
 @Injectable()
 export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
-  oracleOwnerAddress: string = GenesisKeys[0].owner.address
-
   constructor (
     protected readonly client: JsonRpcClient,
     protected readonly setupOracle: SetupOracle) {
