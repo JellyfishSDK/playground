@@ -4,6 +4,43 @@ import { ConfigService } from '@nestjs/config'
 import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { newFastifyAdapter } from '@src/fastify'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
+import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
+
+export class PlaygroundTesting {
+  nestFastifyApplication?: NestFastifyApplication
+  jsonRpcClient?: JsonRpcClient
+
+  constructor (public readonly container: MasterNodeRegTestContainer = new MasterNodeRegTestContainer()) {
+  }
+
+  async start (): Promise<void> {
+    await this.container.start()
+    await this.container.waitForWalletCoinbaseMaturity()
+
+    this.nestFastifyApplication = await createTestingApp(this.container)
+    this.jsonRpcClient = new JsonRpcClient(await this.container.getCachedRpcUrl())
+  }
+
+  async stop (): Promise<void> {
+    await stopTestingApp(this.container, this.app)
+  }
+
+  get app (): NestFastifyApplication {
+    if (this.nestFastifyApplication === undefined) {
+      throw new Error('not yet started')
+    }
+
+    return this.nestFastifyApplication
+  }
+
+  get client (): JsonRpcClient {
+    if (this.jsonRpcClient === undefined) {
+      throw new Error('not yet started')
+    }
+
+    return this.jsonRpcClient
+  }
+}
 
 /**
  * Configures an end-to-end testing app integrated with all modules.

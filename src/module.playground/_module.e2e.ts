@@ -1,51 +1,43 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
-import { createTestingApp, stopTestingApp } from '@src/e2e.module'
-import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
+import { PlaygroundTesting } from '@src/e2e.module'
 import BigNumber from 'bignumber.js'
 
-const container = new MasterNodeRegTestContainer()
-let client: JsonRpcClient
-let app: NestFastifyApplication
+const testing = new PlaygroundTesting()
 
 beforeAll(async () => {
-  await container.start()
-  await container.waitForWalletCoinbaseMaturity()
-  app = await createTestingApp(container)
-  client = new JsonRpcClient(await container.getCachedRpcUrl())
+  await testing.start()
 })
 
 afterAll(async () => {
-  await stopTestingApp(container, app)
+  await testing.stop()
 })
 
 it('should have pool pairs setup', async () => {
-  const pairs = await client.poolpair.listPoolPairs()
+  const pairs = await testing.client.poolpair.listPoolPairs()
   expect(Object.values(pairs).length).toBe(5)
 })
 
 it('should have tokens setup', async () => {
-  const tokens = await client.token.listTokens()
+  const tokens = await testing.client.token.listTokens()
   expect(Object.values(tokens).length).toBe(11)
 })
 
 it('should have oracles setup', async () => {
-  const oracles = await client.oracle.listOracles()
+  const oracles = await testing.client.oracle.listOracles()
   expect(Object.values(oracles).length).toBe(6)
 })
 
 it('should have masternode setup', async () => {
-  const oracles = await client.masternode.listMasternodes()
+  const oracles = await testing.client.masternode.listMasternodes()
   expect(Object.values(oracles).length).toBe(10)
 })
 
 it('should not have minted more than 200 blocks', async () => {
-  const count = await client.blockchain.getBlockCount()
+  const count = await testing.client.blockchain.getBlockCount()
   expect(count).toBeLessThanOrEqual(200)
 })
 
 it('should have at least 199 million in balance', async () => {
   const m199 = new BigNumber('199100100')
-  const balances = await client.wallet.getBalances()
+  const balances = await testing.client.wallet.getBalances()
   expect(balances.mine.trusted.isGreaterThan(m199)).toStrictEqual(true)
 })
