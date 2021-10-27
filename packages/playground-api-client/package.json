@@ -2,7 +2,6 @@
   "private": false,
   "name": "@defichain/playground-api-client",
   "version": "0.0.0",
-  "description": "Official JS client for DeFi Playground, the super index for DeFi Blockchain to simplify DeFi light implementation.",
   "keywords": [
     "DeFiChain",
     "DeFi",
@@ -15,22 +14,6 @@
   "repository": "DeFiCh/playground",
   "bugs": "https://github.com/DeFiCh/playground/issues",
   "license": "MIT",
-  "contributors": [
-    {
-      "name": "DeFiChain Foundation",
-      "email": "engineering@defichain.com",
-      "url": "https://defichain.com/"
-    },
-    {
-      "name": "DeFi Blockchain Contributors"
-    },
-    {
-      "name": "DeFi Jellyfish Contributors"
-    },
-    {
-      "name": "DeFi Playground Contributors"
-    }
-  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -40,8 +23,9 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@defichain/jellyfish-api-core": ">=0.49.1",
-    "cross-fetch": "^3.1.2",
-    "abort-controller": "^3.0.0"
+    "@defichain/jellyfish-api-core": "^0.49.1",
+    "abort-controller": "^3.0.0",
+    "cross-fetch": "^3.1.4",
+    "defichain": "^0.49.1"
   }
 }

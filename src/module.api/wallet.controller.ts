@@ -4,7 +4,7 @@ import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { SendTo, WalletBalances } from '@playground-api-client/api/wallet'
 import { CTransaction, DeFiTransactionConstants, OP_CODES, Transaction, Vout } from '@defichain/jellyfish-transaction'
 import { DeFiAddress } from '@defichain/jellyfish-address'
-import { waitForCondition } from '@defichain/testcontainers/dist/wait_for_condition'
+import { waitForCondition } from '@defichain/testcontainers/dist/utils'
 
 @Controller('/v0/playground/wallet')
 export class WalletController {
