@@ -1,6 +1,6 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
+import { LoanMasterNodeRegTestContainer, MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
-import { createTestingApp } from '../../../src/e2e.module'
+import { createTestingApp, stopTestingApp } from '../../../src/e2e.module'
 
 /**
  * Service stubs are simulations of a real service, which are used for functional testing.
@@ -9,14 +9,18 @@ import { createTestingApp } from '../../../src/e2e.module'
 export class StubService {
   app?: NestFastifyApplication
 
-  constructor (readonly container: MasterNodeRegTestContainer) {
+  constructor (readonly container: MasterNodeRegTestContainer = new LoanMasterNodeRegTestContainer()) {
   }
 
   async start (): Promise<void> {
+    await this.container.start()
     this.app = await createTestingApp(this.container)
   }
 
   async stop (): Promise<void> {
-    this.app?.close()
+    if (this.app === undefined) {
+      throw new Error('attempting to stop service without starting it previously')
+    }
+    await stopTestingApp(this.container, this.app)
   }
 }

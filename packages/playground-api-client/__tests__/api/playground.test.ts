@@ -1,29 +1,16 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
-import { PlaygroundApiClient } from '../../src'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
 
-let container: MasterNodeRegTestContainer
-let service: StubService
-let client: PlaygroundApiClient
+const service = new StubService()
+const client = new StubPlaygroundApiClient(service)
 
 beforeAll(async () => {
-  container = new MasterNodeRegTestContainer()
-  service = new StubService(container)
-  client = new StubPlaygroundApiClient(service)
-
-  await container.start()
-  await container.waitForReady()
-  await container.waitForWalletCoinbaseMaturity()
   await service.start()
+  await service.container.waitForWalletCoinbaseMaturity()
 })
 
 afterAll(async () => {
-  try {
-    await service.stop()
-  } finally {
-    await container.stop()
-  }
+  await service.stop()
 })
 
 it('should get info', async () => {

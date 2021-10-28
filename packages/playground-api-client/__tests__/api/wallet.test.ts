@@ -1,26 +1,19 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
 import { Testing } from '@defichain/jellyfish-testing'
 import BigNumber from 'bignumber.js'
 
-const container = new MasterNodeRegTestContainer()
-const testing = Testing.create(container)
-const service = new StubService(container)
+const service = new StubService()
+const testing = Testing.create(service.container)
 const client = new StubPlaygroundApiClient(service)
 
 beforeAll(async () => {
-  await container.start()
-  await container.waitForWalletCoinbaseMaturity()
   await service.start()
+  await service.container.waitForWalletCoinbaseMaturity()
 })
 
 afterAll(async () => {
-  try {
-    await service.stop()
-  } finally {
-    await container.stop()
-  }
+  await service.stop()
 })
 
 it('should get wallet', async () => {
@@ -65,7 +58,7 @@ describe('tokens', () => {
     const txid = await client.wallet.sendToken('0', '15.99134567', address)
     expect(txid.length).toStrictEqual(64)
 
-    const balances = await container.call('getaccount', [address])
+    const balances = await service.container.call('getaccount', [address])
     expect(balances).toStrictEqual(['15.99134567@DFI'])
   })
 
@@ -85,7 +78,7 @@ describe('tokens', () => {
     const txid = await client.wallet.sendToken('1', '1.2343134', address)
     expect(txid.length).toStrictEqual(64)
 
-    const balances = await container.call('getaccount', [address])
+    const balances = await service.container.call('getaccount', [address])
     expect(balances).toStrictEqual(['1.23431340@BTC'])
   })
 
@@ -94,7 +87,7 @@ describe('tokens', () => {
     const txid = await client.wallet.sendToken('2', '1.500', address)
     expect(txid.length).toStrictEqual(64)
 
-    const balances = await container.call('getaccount', [address])
+    const balances = await service.container.call('getaccount', [address])
     expect(balances).toStrictEqual(['1.50000000@ETH'])
   })
 })

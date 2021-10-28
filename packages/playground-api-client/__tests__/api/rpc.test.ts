@@ -1,29 +1,17 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { blockchain } from '@defichain/jellyfish-api-core'
-import { PlaygroundApiClient } from '../../src'
 import { StubPlaygroundApiClient } from '../stub.client'
 import { StubService } from '../stub.service'
 
-let container: MasterNodeRegTestContainer
-let service: StubService
-let client: PlaygroundApiClient
+const service = new StubService()
+const client = new StubPlaygroundApiClient(service)
 
 beforeAll(async () => {
-  container = new MasterNodeRegTestContainer()
-  service = new StubService(container)
-  client = new StubPlaygroundApiClient(service)
-
-  await container.start()
-  await container.waitForReady()
   await service.start()
+  await service.container.waitForWalletCoinbaseMaturity()
 })
 
 afterAll(async () => {
-  try {
-    await service.stop()
-  } finally {
-    await container.stop()
-  }
+  await service.stop()
 })
 
 it('should throw error on invalid params', async () => {
@@ -47,14 +35,14 @@ describe('whitelisted rpc methods', () => {
   })
 
   it('should rpc.call(getblockhash)', async () => {
-    await container.generate(1)
+    await service.container.generate(1)
 
     const hash = await client.rpc.call<string>('getblockhash', [1], 'number')
     expect(hash.length).toStrictEqual(64)
   })
 
   it('should rpc.call(getblock)', async () => {
-    await container.generate(1)
+    await service.container.generate(1)
 
     const hash = await client.rpc.call<string>('getblockhash', [1], 'number')
     const block = await client.rpc.call<blockchain.Block<blockchain.Transaction>>('getblock', [hash], 'number')

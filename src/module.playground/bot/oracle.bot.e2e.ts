@@ -1,35 +1,27 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
-import { createTestingApp, stopTestingApp } from '@src/e2e.module'
-import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
+import { PlaygroundTesting } from '@src/e2e.module'
 import waitForExpect from 'wait-for-expect'
 import { SetupOracle } from '../setup/setup.oracle'
 
-const container = new MasterNodeRegTestContainer()
-let client: JsonRpcClient
-let app: NestFastifyApplication
+const testing = new PlaygroundTesting()
 
 beforeAll(async () => {
-  await container.start()
-  await container.waitForWalletCoinbaseMaturity()
-  app = await createTestingApp(container)
-  client = new JsonRpcClient(await container.getCachedRpcUrl())
+  await testing.start()
 })
 
 afterAll(async () => {
-  await stopTestingApp(container, app)
+  await testing.stop()
 })
 
 describe('oracle bot', () => {
   it('should change oracle price', async () => {
-    const oracles = await client.oracle.listOracles()
+    const oracles = await testing.client.oracle.listOracles()
     expect(Object.values(oracles).length).toBe(6)
 
-    const setupOracle = app.get(SetupOracle)
+    const setupOracle = testing.app.get(SetupOracle)
     const oracleIds = setupOracle.oracleIds.U10
 
     await waitForExpect(async () => {
-      const oracleData = await client.oracle.getOracleData(oracleIds[0])
+      const oracleData = await testing.client.oracle.getOracleData(oracleIds[0])
 
       const tokenPriceU10 = oracleData.tokenPrices.find(x => x.token === 'U10')
       expect(tokenPriceU10?.amount).toStrictEqual(11)

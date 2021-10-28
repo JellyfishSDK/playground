@@ -1,23 +1,18 @@
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
-import { createTestingApp, stopTestingApp } from '@src/e2e.module'
+import { PlaygroundTesting } from '@src/e2e.module'
 
-const container = new MasterNodeRegTestContainer()
-let app: NestFastifyApplication
+const testing = new PlaygroundTesting()
 
 beforeAll(async () => {
-  await container.start()
-  await container.waitForReady()
-  app = await createTestingApp(container)
+  await testing.start()
 })
 
 afterAll(async () => {
-  await stopTestingApp(container, app)
+  await testing.stop()
 })
 
 describe('/_actuator/probes/liveness', () => {
   it('should wait until liveness', async () => {
-    const res = await app.inject({
+    const res = await testing.app.inject({
       method: 'GET',
       url: '/_actuator/probes/liveness'
     })
@@ -48,7 +43,7 @@ describe('/_actuator/probes/liveness', () => {
 
 describe('/_actuator/probes/readiness', () => {
   it('should wait until readiness', async () => {
-    const res = await app.inject({
+    const res = await testing.app.inject({
       method: 'GET',
       url: '/_actuator/probes/readiness'
     })
