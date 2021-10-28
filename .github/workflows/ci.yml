@@ -97,10 +97,10 @@ jobs:
       - name: Setup docker containers
         run: docker-compose -f .github/workflows/ci/docker-compose.yml up -d
 
-      - name: Wait for :3002/_actuator/probes/liveness
+      - name: Wait for :3001/_actuator/probes/liveness
         run: .github/workflows/ci/wait-for http://localhost:3001/_actuator/probes/liveness -t 120
 
-      - name: Wait for :3001/_actuator/probes/liveness
+      - name: Wait for :3002/_actuator/probes/liveness
         run: .github/workflows/ci/wait-for http://localhost:3002/_actuator/probes/liveness -t 120
 
       - name: Wait for :8082/ping
