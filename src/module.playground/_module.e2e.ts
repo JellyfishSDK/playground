@@ -1,5 +1,4 @@
 import { PlaygroundTesting } from '@src/e2e.module'
-import BigNumber from 'bignumber.js'
 
 const testing = new PlaygroundTesting()
 
@@ -18,12 +17,12 @@ it('should have pool pairs setup', async () => {
 
 it('should have tokens setup', async () => {
   const tokens = await testing.client.token.listTokens()
-  expect(Object.values(tokens).length).toBe(11)
+  expect(Object.values(tokens).length).toBe(19)
 })
 
 it('should have oracles setup', async () => {
   const oracles = await testing.client.oracle.listOracles()
-  expect(Object.values(oracles).length).toBe(6)
+  expect(Object.values(oracles).length).toBe(3)
 })
 
 it('should have masternode setup', async () => {
@@ -36,13 +35,22 @@ it('should not have minted more than 200 blocks', async () => {
   expect(count).toBeLessThanOrEqual(200)
 })
 
-it('should have at least 199 million in balance', async () => {
-  const m199 = new BigNumber('199100100')
+it('should have at least 10 million in balance', async () => {
   const balances = await testing.client.wallet.getBalances()
-  expect(balances.mine.trusted.isGreaterThan(m199)).toStrictEqual(true)
+  expect(balances.mine.trusted.toNumber()).toBeGreaterThanOrEqual(10_000_000)
 })
 
 it('should have loan schemes', async () => {
   const results = await testing.client.loan.listLoanSchemes()
   expect(results.length).toBe(6)
+})
+
+it('should have loan tokens', async () => {
+  const results = await testing.client.loan.listLoanTokens()
+  expect(results.length).toBe(4)
+})
+
+it('should have loan collateral tokens', async () => {
+  const results = await testing.client.loan.listCollateralTokens()
+  expect(results.length).toBe(9)
 })

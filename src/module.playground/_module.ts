@@ -11,6 +11,8 @@ import { SetupMasternode } from '@src/module.playground/setup/setup.masternode'
 import { SetupUtxo } from '@src/module.playground/setup/setup.utxo'
 import { OracleBot } from './bot/oracle.bot'
 import { SetupLoanScheme } from '@src/module.playground/setup/setup.loan.scheme'
+import { SetupLoanToken } from '@src/module.playground/setup/setup.loan.token'
+import { SetupLoanCollateral } from '@src/module.playground/setup/setup.loan.collateral'
 
 @Global()
 @Module({
@@ -21,6 +23,8 @@ import { SetupLoanScheme } from '@src/module.playground/setup/setup.loan.scheme'
     SetupOracle,
     SetupMasternode,
     SetupLoanScheme,
+    SetupLoanToken,
+    SetupLoanCollateral,
     OracleBot,
     PlaygroundBlock,
     PlaygroundProbeIndicator
@@ -42,7 +46,9 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     dex: SetupDex,
     oracle: SetupOracle,
     masternode: SetupMasternode,
-    loanScheme: SetupLoanScheme
+    loanScheme: SetupLoanScheme,
+    loanToken: SetupLoanToken,
+    loanCollateral: SetupLoanCollateral
   ) {
     this.setups = [
       utxo,
@@ -50,7 +56,9 @@ export class PlaygroundModule implements OnApplicationBootstrap {
       dex,
       oracle,
       masternode,
-      loanScheme
+      loanScheme,
+      loanToken,
+      loanCollateral
     ]
   }
 
