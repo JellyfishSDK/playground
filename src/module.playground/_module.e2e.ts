@@ -41,3 +41,8 @@ it('should have at least 199 million in balance', async () => {
   const balances = await testing.client.wallet.getBalances()
   expect(balances.mine.trusted.isGreaterThan(m199)).toStrictEqual(true)
 })
+
+it('should have loan schemes', async () => {
+  const results = await testing.client.loan.listLoanSchemes()
+  expect(results.length).toBe(6)
+})

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { AppModule } from '@src/app.module'
 import { ConfigService } from '@nestjs/config'
-import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
+import { LoanMasterNodeRegTestContainer, MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { newFastifyAdapter } from '@src/fastify'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
@@ -10,7 +10,7 @@ export class PlaygroundTesting {
   nestFastifyApplication?: NestFastifyApplication
   jsonRpcClient?: JsonRpcClient
 
-  constructor (public readonly container: MasterNodeRegTestContainer = new MasterNodeRegTestContainer()) {
+  constructor (public readonly container: MasterNodeRegTestContainer = new LoanMasterNodeRegTestContainer()) {
   }
 
   async start (): Promise<void> {
