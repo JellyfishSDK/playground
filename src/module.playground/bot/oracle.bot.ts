@@ -1,24 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { BigNumber } from '@defichain/jellyfish-json'
-import { PlaygroundBot } from './bot'
 import { SetupOracle } from '../setup/setup.oracle'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
+import { Interval } from '@nestjs/schedule'
 
-/**
- * The following symbols are automated by this bot:
- * - U10: Goes up every 15 seconds by 10%
- * - U25: Goes up every 15 seconds by 25%
- * - U50: Goes up every 15 seconds by 50%
- * - D10: Goes down every 15 seconds by 10%
- * - D25: Goes down every 15 seconds by 25%
- * - D50: Goes down every 15 seconds by 50%
- * - S25: Is always $25
- * - S50: Is always $50
- * - S100: Is always $100
- * - R25: Goes down every 15 seconds by $25
- * - R50: Goes down every 15 seconds by $50
- * - R100: Goes down every 15 seconds by $100
- */
 enum PriceDirection {
   UP_ABSOLUTE, // Always going up (absolute value)
   DOWN_ABSOLUTE, // Always going down (absolute value)
@@ -55,189 +40,122 @@ const PriceDirectionFunctions: Record<PriceDirection, PriceDirectionFunction> = 
 
 interface SimulatedOracleFeed {
   token: string
-  startingPrice: BigNumber
-  priceChange: BigNumber
-  timeInterval: number
-  priceDirection: PriceDirection
+  amount: BigNumber
+  change: BigNumber
+  direction: PriceDirection
 }
 
 @Injectable()
-export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
+export class OracleBot {
+  private feeds: SimulatedOracleFeed[] = [
+    {
+      token: 'CU10',
+      amount: new BigNumber(10),
+      change: new BigNumber(10),
+      direction: PriceDirection.UP_PERCENTAGE
+    },
+    {
+      token: 'TU10',
+      amount: new BigNumber(10),
+      change: new BigNumber(25),
+      direction: PriceDirection.UP_PERCENTAGE
+    },
+    {
+      token: 'CD10',
+      amount: new BigNumber(10000000),
+      change: new BigNumber(10),
+      direction: PriceDirection.DOWN_PERCENTAGE
+    },
+    {
+      token: 'TD10',
+      amount: new BigNumber(10000000),
+      change: new BigNumber(10),
+      direction: PriceDirection.DOWN_PERCENTAGE
+    },
+    {
+      token: 'CS25',
+      amount: new BigNumber(25),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    },
+    {
+      token: 'TS25',
+      amount: new BigNumber(25),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    },
+    {
+      token: 'CR50',
+      amount: new BigNumber(5000),
+      change: new BigNumber(50),
+      direction: PriceDirection.RANDOM
+    },
+    {
+      token: 'TR50',
+      amount: new BigNumber(5000),
+      change: new BigNumber(50),
+      direction: PriceDirection.RANDOM
+    },
+    {
+      token: 'DFI',
+      amount: new BigNumber(100),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    },
+    {
+      token: 'BTC',
+      amount: new BigNumber(50),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    },
+    {
+      token: 'ETH',
+      amount: new BigNumber(10),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    },
+    {
+      token: 'USDC',
+      amount: new BigNumber(1),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    },
+    {
+      token: 'USDT',
+      amount: new BigNumber(0.99),
+      change: new BigNumber(0),
+      direction: PriceDirection.STABLE
+    }
+  ]
+
   constructor (
     protected readonly client: JsonRpcClient,
     protected readonly setupOracle: SetupOracle) {
-    super(client)
   }
 
-  list (): SimulatedOracleFeed[] {
-    return [
-      {
-        token: 'U10',
-        startingPrice: new BigNumber(10),
-        priceChange: new BigNumber(10),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.UP_PERCENTAGE
-      },
-      {
-        token: 'U25',
-        startingPrice: new BigNumber(10),
-        priceChange: new BigNumber(25),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.UP_PERCENTAGE
-      },
-      {
-        token: 'U50',
-        startingPrice: new BigNumber(10),
-        priceChange: new BigNumber(50),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.UP_PERCENTAGE
-      },
-      {
-        token: 'D10',
-        startingPrice: new BigNumber(10000000),
-        priceChange: new BigNumber(10),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.DOWN_PERCENTAGE
-      },
-      {
-        token: 'D25',
-        startingPrice: new BigNumber(10000000),
-        priceChange: new BigNumber(25),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.DOWN_PERCENTAGE
-      },
-      {
-        token: 'D50',
-        startingPrice: new BigNumber(10000000),
-        priceChange: new BigNumber(50),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.DOWN_PERCENTAGE
-      },
-      {
-        token: 'S25',
-        startingPrice: new BigNumber(25),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'S50',
-        startingPrice: new BigNumber(50),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'S100',
-        startingPrice: new BigNumber(100),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'R25',
-        startingPrice: new BigNumber(5000),
-        priceChange: new BigNumber(25),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.RANDOM
-      },
-      {
-        token: 'R50',
-        startingPrice: new BigNumber(5000),
-        priceChange: new BigNumber(50),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.RANDOM
-      },
-      {
-        token: 'R100',
-        startingPrice: new BigNumber(5000),
-        priceChange: new BigNumber(100),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.RANDOM
-      },
-      {
-        token: 'DFI',
-        startingPrice: new BigNumber(100),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'BTC',
-        startingPrice: new BigNumber(50),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'ETH',
-        startingPrice: new BigNumber(10),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'USDC',
-        startingPrice: new BigNumber(1),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
-      },
-      {
-        token: 'USDT',
-        startingPrice: new BigNumber(0.99),
-        priceChange: new BigNumber(0),
-        timeInterval: 15000,
-        priceDirection: PriceDirection.STABLE
+  @Interval(5000)
+  async run (): Promise<void> {
+    for (const oracleId of this.setupOracle.oracleIds) {
+      await this.publish(oracleId)
+    }
+
+    this.feeds = this.feeds.map(value => {
+      const func = PriceDirectionFunctions[value.direction]
+      return {
+        ...value,
+        amount: func(value.amount, value.change)
       }
-    ]
-  }
-
-  private async sendInitial (oracleId: string, medianTime: number, each: SimulatedOracleFeed): Promise<void> {
-    await this.client.oracle.setOracleData(oracleId, medianTime, {
-      prices: [
-        {
-          tokenAmount: `${each.startingPrice.toFixed(8)}@${each.token}`,
-          currency: 'USD'
-        }
-      ]
     })
   }
 
-  async run (each: SimulatedOracleFeed): Promise<void> {
-    const oracleIds = this.setupOracle.oracleIds[each.token]
-    const blockchainInfo = await this.client.blockchain.getBlockchainInfo()
-    const medianTime = blockchainInfo.mediantime
-    for (const oracleId of oracleIds) {
-      const oracleData = await this.client.oracle.getOracleData(oracleId)
-      const tokenPrice = oracleData.tokenPrices.find(x => x.token === each.token)
+  async publish (oracleId: string): Promise<void> {
+    const time = Math.floor(Date.now() / 1000)
 
-      if (tokenPrice === undefined) {
-        await this.sendInitial(oracleId, medianTime, each)
-        continue
-      }
-
-      if (medianTime - tokenPrice.timestamp < (each.timeInterval / 1000)) {
-        continue
-      }
-
-      const price = new BigNumber(tokenPrice.amount)
-      const priceFunction = PriceDirectionFunctions[each.priceDirection]
-      const newPrice = priceFunction(price, each.priceChange)
-
-      await this.client.oracle.setOracleData(oracleId, medianTime, {
-        prices: [
-          {
-            tokenAmount: `${newPrice.toFixed(8)}@${each.token}`,
-            currency: 'USD'
-          }
-        ]
-      })
-    }
-  }
-
-  async has (each: SimulatedOracleFeed): Promise<boolean> {
-    const oracleIds = this.setupOracle.oracleIds[each.token]
-    return oracleIds !== undefined
+    await this.client.oracle.setOracleData(oracleId, time, {
+      prices: this.feeds.map(v => ({
+        tokenAmount: `${v.amount.toFixed(8)}@${v.token}`,
+        currency: 'USD'
+      }))
+    })
   }
 }

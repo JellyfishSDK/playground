@@ -9,7 +9,7 @@ interface OracleSetup {
   options: AppointOracleOptions
 }
 
-const STOCKS: OraclePriceFeed[] = [
+const FEEDS: OraclePriceFeed[] = [
   {
     token: 'TSLA',
     currency: 'USD'
@@ -21,56 +21,37 @@ const STOCKS: OraclePriceFeed[] = [
   {
     token: 'FB',
     currency: 'USD'
-  }
-]
-
-const BOTS: OraclePriceFeed[] = [
+  },
   {
-    token: 'U10',
+    token: 'CU10',
     currency: 'USD'
   },
   {
-    token: 'U25',
+    token: 'TU10',
     currency: 'USD'
   },
   {
-    token: 'U50',
+    token: 'CD10',
     currency: 'USD'
   },
   {
-    token: 'D10',
+    token: 'TD10',
     currency: 'USD'
   },
   {
-    token: 'D25',
+    token: 'CS25',
     currency: 'USD'
   },
   {
-    token: 'D50',
+    token: 'TS25',
     currency: 'USD'
   },
   {
-    token: 'R25',
+    token: 'CR50',
     currency: 'USD'
   },
   {
-    token: 'R50',
-    currency: 'USD'
-  },
-  {
-    token: 'R100',
-    currency: 'USD'
-  },
-  {
-    token: 'S25',
-    currency: 'USD'
-  },
-  {
-    token: 'S50',
-    currency: 'USD'
-  },
-  {
-    token: 'S100',
+    token: 'TR50',
     currency: 'USD'
   },
   {
@@ -98,48 +79,27 @@ const BOTS: OraclePriceFeed[] = [
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
   oracleOwnerAddress: string = GenesisKeys[0].owner.address
-  oracleIds: Record<string, string[]> = {}
+  oracleIds: string[] = []
 
   list (): OracleSetup[] {
     return [
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: STOCKS,
+        priceFeeds: FEEDS,
         options: {
           weightage: 1
         }
       },
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: STOCKS,
+        priceFeeds: FEEDS,
         options: {
           weightage: 1
         }
       },
       {
         address: this.oracleOwnerAddress,
-        priceFeeds: STOCKS,
-        options: {
-          weightage: 1
-        }
-      },
-      {
-        address: this.oracleOwnerAddress,
-        priceFeeds: BOTS,
-        options: {
-          weightage: 1
-        }
-      },
-      {
-        address: this.oracleOwnerAddress,
-        priceFeeds: BOTS,
-        options: {
-          weightage: 1
-        }
-      },
-      {
-        address: this.oracleOwnerAddress,
-        priceFeeds: BOTS,
+        priceFeeds: FEEDS,
         options: {
           weightage: 1
         }
@@ -150,11 +110,7 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
   async create (each: OracleSetup): Promise<void> {
     await this.waitForBalance(101)
     const oracleId = await this.client.oracle.appointOracle(each.address, each.priceFeeds, each.options)
-
-    for (const { token } of each.priceFeeds) {
-      this.oracleIds[token] = [...(this.oracleIds[token] ?? []), oracleId]
-    }
-
+    this.oracleIds.push(oracleId)
     await this.generate(1)
   }
 

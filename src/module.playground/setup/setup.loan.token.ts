@@ -8,64 +8,24 @@ export class SetupLoanToken extends PlaygroundSetup<SetLoanToken> {
   list (): SetLoanToken[] {
     return [
       {
-        symbol: 'U10',
-        fixedIntervalPriceId: 'U10/USD',
+        symbol: 'TU10',
+        fixedIntervalPriceId: 'TU10/USD',
         interest: new BigNumber('1.0')
       },
       {
-        symbol: 'U25',
-        fixedIntervalPriceId: 'U25/USD',
+        symbol: 'TD10',
+        fixedIntervalPriceId: 'TD10/USD',
         interest: new BigNumber('1.5')
       },
       {
-        symbol: 'U50',
-        fixedIntervalPriceId: 'U50/USD',
+        symbol: 'TS25',
+        fixedIntervalPriceId: 'TS25/USD',
         interest: new BigNumber('2.0')
       },
       {
-        symbol: 'D10',
-        fixedIntervalPriceId: 'D10/USD',
-        interest: new BigNumber('1.0')
-      },
-      {
-        symbol: 'D25',
-        fixedIntervalPriceId: 'D25/USD',
-        interest: new BigNumber('1.5')
-      },
-      {
-        symbol: 'D50',
-        fixedIntervalPriceId: 'D50/USD',
-        interest: new BigNumber('2.0')
-      },
-      {
-        symbol: 'S25',
-        fixedIntervalPriceId: 'S25/USD',
-        interest: new BigNumber('1.0')
-      },
-      {
-        symbol: 'S50',
-        fixedIntervalPriceId: 'S50/USD',
-        interest: new BigNumber('1.5')
-      },
-      {
-        symbol: 'S100',
-        fixedIntervalPriceId: 'S100/USD',
-        interest: new BigNumber('2.0')
-      },
-      {
-        symbol: 'R25',
-        fixedIntervalPriceId: 'R25/USD',
-        interest: new BigNumber('1.0')
-      },
-      {
-        symbol: 'R50',
-        fixedIntervalPriceId: 'R50/USD',
-        interest: new BigNumber('1.5')
-      },
-      {
-        symbol: 'R100',
-        fixedIntervalPriceId: 'R100/USD',
-        interest: new BigNumber('2.0')
+        symbol: 'TR50',
+        fixedIntervalPriceId: 'TR50/USD',
+        interest: new BigNumber('3.0')
       }
     ]
   }

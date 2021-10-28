@@ -65,6 +65,50 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
           collateralAddress: PlaygroundSetup.address
         },
         amount: 200000000
+      },
+      {
+        create: {
+          symbol: 'CU10',
+          name: 'Playground CU10',
+          isDAT: true,
+          mintable: true,
+          tradeable: true,
+          collateralAddress: PlaygroundSetup.address
+        },
+        amount: 100000000
+      },
+      {
+        create: {
+          symbol: 'CD10',
+          name: 'Playground CD10',
+          isDAT: true,
+          mintable: true,
+          tradeable: true,
+          collateralAddress: PlaygroundSetup.address
+        },
+        amount: 100000000
+      },
+      {
+        create: {
+          symbol: 'CS25',
+          name: 'Playground CS25',
+          isDAT: true,
+          mintable: true,
+          tradeable: true,
+          collateralAddress: PlaygroundSetup.address
+        },
+        amount: 100000000
+      },
+      {
+        create: {
+          symbol: 'CR50',
+          name: 'Playground CR50',
+          isDAT: true,
+          mintable: true,
+          tradeable: true,
+          collateralAddress: PlaygroundSetup.address
+        },
+        amount: 100000000
       }
     ]
   }

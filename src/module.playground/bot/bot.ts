@@ -24,7 +24,7 @@ export abstract class PlaygroundBot<Each> {
   constructor (protected readonly client: JsonRpcClient) {
   }
 
-  @Interval(3000)
+  @Interval(5000)
   async runAll (): Promise<void> {
     const list = this.list()
     for (const each of list) {

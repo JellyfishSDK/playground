@@ -33,63 +33,23 @@ export class SetupLoanCollateral extends PlaygroundSetup<SetCollateralToken> {
         factor: new BigNumber('0')
       },
       {
-        token: 'U10',
-        fixedIntervalPriceId: 'U25/USD',
+        token: 'CU10',
+        fixedIntervalPriceId: 'CU10/USD',
         factor: new BigNumber('0')
       },
       {
-        token: 'U25',
-        fixedIntervalPriceId: 'U25/USD',
+        token: 'CD10',
+        fixedIntervalPriceId: 'CD10/USD',
         factor: new BigNumber('0')
       },
       {
-        token: 'U50',
-        fixedIntervalPriceId: 'U50/USD',
+        token: 'CS25',
+        fixedIntervalPriceId: 'CS25/USD',
         factor: new BigNumber('0')
       },
       {
-        token: 'D10',
-        fixedIntervalPriceId: 'D10/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'D25',
-        fixedIntervalPriceId: 'D25/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'D50',
-        fixedIntervalPriceId: 'D50/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'S25',
-        fixedIntervalPriceId: 'S25/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'S50',
-        fixedIntervalPriceId: 'S50/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'S100',
-        fixedIntervalPriceId: 'S100/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'R25',
-        fixedIntervalPriceId: 'R25/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'R50',
-        fixedIntervalPriceId: 'R50/USD',
-        factor: new BigNumber('0')
-      },
-      {
-        token: 'R100',
-        fixedIntervalPriceId: 'R100/USD',
+        token: 'CR50',
+        fixedIntervalPriceId: 'CR50/USD',
         factor: new BigNumber('0')
       }
     ]
@@ -102,8 +62,8 @@ export class SetupLoanCollateral extends PlaygroundSetup<SetCollateralToken> {
 
   async has (each: SetCollateralToken): Promise<boolean> {
     try {
-      await this.client.loan.getCollateralToken(each.token)
-      return true
+      const token = await this.client.loan.getCollateralToken(each.token)
+      return token.token !== undefined
     } catch (e) {
       return false
     }
