@@ -154,6 +154,41 @@ export class OracleBot extends PlaygroundBot<SimulatedOracleFeed> {
         priceChange: new BigNumber(100),
         timeInterval: 15000,
         priceDirection: PriceDirection.RANDOM
+      },
+      {
+        token: 'DFI',
+        startingPrice: new BigNumber(100),
+        priceChange: new BigNumber(0),
+        timeInterval: 15000,
+        priceDirection: PriceDirection.STABLE
+      },
+      {
+        token: 'BTC',
+        startingPrice: new BigNumber(50),
+        priceChange: new BigNumber(0),
+        timeInterval: 15000,
+        priceDirection: PriceDirection.STABLE
+      },
+      {
+        token: 'ETH',
+        startingPrice: new BigNumber(10),
+        priceChange: new BigNumber(0),
+        timeInterval: 15000,
+        priceDirection: PriceDirection.STABLE
+      },
+      {
+        token: 'USDC',
+        startingPrice: new BigNumber(1),
+        priceChange: new BigNumber(0),
+        timeInterval: 15000,
+        priceDirection: PriceDirection.STABLE
+      },
+      {
+        token: 'USDT',
+        startingPrice: new BigNumber(0.99),
+        priceChange: new BigNumber(0),
+        timeInterval: 15000,
+        priceDirection: PriceDirection.STABLE
       }
     ]
   }

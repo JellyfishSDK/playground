@@ -18,7 +18,7 @@ it('should have pool pairs setup', async () => {
 
 it('should have tokens setup', async () => {
   const tokens = await testing.client.token.listTokens()
-  expect(Object.values(tokens).length).toBe(11)
+  expect(Object.values(tokens).length).toBe(23)
 })
 
 it('should have oracles setup', async () => {
@@ -37,12 +37,23 @@ it('should not have minted more than 200 blocks', async () => {
 })
 
 it('should have at least 199 million in balance', async () => {
-  const m199 = new BigNumber('199100100')
+  const m199 = new BigNumber('199000100')
   const balances = await testing.client.wallet.getBalances()
+  console.log(balances.mine.trusted)
   expect(balances.mine.trusted.isGreaterThan(m199)).toStrictEqual(true)
 })
 
 it('should have loan schemes', async () => {
   const results = await testing.client.loan.listLoanSchemes()
   expect(results.length).toBe(6)
+})
+
+it('should have loan tokens', async () => {
+  const results = await testing.client.loan.listLoanTokens()
+  expect(results.length).toBe(12)
+})
+
+it('should have loan collateral tokens', async () => {
+  const results = await testing.client.loan.listCollateralTokens()
+  expect(results.length).toBe(13)
 })

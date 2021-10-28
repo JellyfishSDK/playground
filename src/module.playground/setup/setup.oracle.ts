@@ -72,6 +72,26 @@ const BOTS: OraclePriceFeed[] = [
   {
     token: 'S100',
     currency: 'USD'
+  },
+  {
+    token: 'DFI',
+    currency: 'USD'
+  },
+  {
+    token: 'BTC',
+    currency: 'USD'
+  },
+  {
+    token: 'ETH',
+    currency: 'USD'
+  },
+  {
+    token: 'USDC',
+    currency: 'USD'
+  },
+  {
+    token: 'USDT',
+    currency: 'USD'
   }
 ]
 

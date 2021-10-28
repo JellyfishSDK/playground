@@ -49,6 +49,21 @@ describe('oracle bot', () => {
 
       const tokenPriceS100 = oracleData.tokenPrices.find(x => x.token === 'S100')
       expect(tokenPriceS100?.amount).toStrictEqual(100)
+
+      const tokenPriceDFI = oracleData.tokenPrices.find(x => x.token === 'DFI')
+      expect(tokenPriceDFI?.amount).toStrictEqual(100)
+
+      const tokenPriceBTC = oracleData.tokenPrices.find(x => x.token === 'BTC')
+      expect(tokenPriceBTC?.amount).toStrictEqual(50)
+
+      const tokenPriceETH = oracleData.tokenPrices.find(x => x.token === 'ETH')
+      expect(tokenPriceETH?.amount).toStrictEqual(10)
+
+      const tokenPriceUSDC = oracleData.tokenPrices.find(x => x.token === 'USDC')
+      expect(tokenPriceUSDC?.amount).toStrictEqual(1)
+
+      const tokenPriceUSDT = oracleData.tokenPrices.find(x => x.token === 'USDT')
+      expect(tokenPriceUSDT?.amount).toStrictEqual(0.99)
     }, 200000)
   })
 })
