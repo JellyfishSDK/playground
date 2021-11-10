@@ -1,4 +1,4 @@
-import { LoanMasterNodeRegTestContainer, MasterNodeRegTestContainer } from '@defichain/testcontainers'
+import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { createTestingApp, stopTestingApp } from '../../../src/e2e.module'
 
@@ -9,7 +9,7 @@ import { createTestingApp, stopTestingApp } from '../../../src/e2e.module'
 export class StubService {
   app?: NestFastifyApplication
 
-  constructor (readonly container: MasterNodeRegTestContainer = new LoanMasterNodeRegTestContainer()) {
+  constructor (readonly container: MasterNodeRegTestContainer = new MasterNodeRegTestContainer()) {
   }
 
   async start (): Promise<void> {
