@@ -10,47 +10,47 @@ export class SetupLoanCollateral extends PlaygroundSetup<SetCollateralToken> {
       {
         token: 'DFI',
         fixedIntervalPriceId: 'DFI/USD',
-        factor: new BigNumber('0.5')
+        factor: new BigNumber('1')
       },
       {
         token: 'BTC',
         fixedIntervalPriceId: 'BTC/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       },
       {
         token: 'ETH',
         fixedIntervalPriceId: 'ETH/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('0.7')
       },
       {
         token: 'USDC',
         fixedIntervalPriceId: 'USDC/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       },
       {
         token: 'USDT',
         fixedIntervalPriceId: 'USDT/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       },
       {
         token: 'CU10',
         fixedIntervalPriceId: 'CU10/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       },
       {
         token: 'CD10',
         fixedIntervalPriceId: 'CD10/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       },
       {
         token: 'CS25',
         fixedIntervalPriceId: 'CS25/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       },
       {
         token: 'CR50',
         fixedIntervalPriceId: 'CR50/USD',
-        factor: new BigNumber('0')
+        factor: new BigNumber('1')
       }
     ]
   }
