@@ -23,10 +23,10 @@ const PriceDirectionFunctions: Record<PriceDirection, PriceDirectionFunction> = 
     return price.minus(priceChange)
   },
   [PriceDirection.UP_PERCENTAGE]: (price: BigNumber, priceChange: BigNumber) => {
-    return price.plus(price.times(priceChange.dividedBy(100)))
+    return price.plus(price.times(priceChange))
   },
   [PriceDirection.DOWN_PERCENTAGE]: (price: BigNumber, priceChange: BigNumber) => {
-    return price.minus(price.times(priceChange.dividedBy(100)))
+    return price.minus(price.times(priceChange))
   },
   [PriceDirection.RANDOM]: (price: BigNumber, priceChange: BigNumber) => {
     return BigNumber.random().gt(0.5)
@@ -51,25 +51,25 @@ export class OracleBot {
     {
       token: 'CU10',
       amount: new BigNumber(10),
-      change: new BigNumber(10),
+      change: new BigNumber(0.0001),
       direction: PriceDirection.UP_PERCENTAGE
     },
     {
       token: 'TU10',
       amount: new BigNumber(10),
-      change: new BigNumber(25),
+      change: new BigNumber(0.0001),
       direction: PriceDirection.UP_PERCENTAGE
     },
     {
       token: 'CD10',
-      amount: new BigNumber(10000000),
-      change: new BigNumber(10),
+      amount: new BigNumber(1000000000),
+      change: new BigNumber(0.0001),
       direction: PriceDirection.DOWN_PERCENTAGE
     },
     {
       token: 'TD10',
-      amount: new BigNumber(10000000),
-      change: new BigNumber(10),
+      amount: new BigNumber(1000000000),
+      change: new BigNumber(0.0001),
       direction: PriceDirection.DOWN_PERCENTAGE
     },
     {
@@ -152,10 +152,14 @@ export class OracleBot {
     const time = Math.floor(Date.now() / 1000)
 
     await this.client.oracle.setOracleData(oracleId, time, {
-      prices: this.feeds.map(v => ({
-        tokenAmount: `${v.amount.toFixed(8)}@${v.token}`,
-        currency: 'USD'
-      }))
+      prices: this.feeds
+        .filter(value => {
+          return value.amount.gt(new BigNumber(0)) && value.amount.lt(new BigNumber(1_200_000_000))
+        })
+        .map(v => ({
+          tokenAmount: `${v.amount.toFixed(8)}@${v.token}`,
+          currency: 'USD'
+        }))
     })
   }
 }
