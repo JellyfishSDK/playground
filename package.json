@@ -34,7 +34,7 @@
     "@defichain/jellyfish-transaction": "^2.7.2",
     "@defichain/jellyfish-transaction-builder": "^2.7.2",
     "@defichain/testcontainers": "^2.7.2",
-    "@nestjs/common": "^8.2.2",
+    "@nestjs/common": "^8.2.3",
     "@nestjs/config": "^1.1.0",
     "@nestjs/core": "^8.2.2",
     "@nestjs/platform-fastify": "^8.2.2",
