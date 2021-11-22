@@ -136,7 +136,7 @@ export class OracleBot {
     protected readonly setupOracle: SetupOracle) {
   }
 
-  @Interval(5000)
+  @Interval(10000)
   async run (): Promise<void> {
     for (const oracleId of this.setupOracle.oracleIds) {
       await this.publish(oracleId)
