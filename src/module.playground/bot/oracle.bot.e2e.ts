@@ -1,6 +1,6 @@
 import { PlaygroundTesting } from '@src/e2e.module'
 import waitForExpect from 'wait-for-expect'
-import { SetupOracle } from '../setup/setup.oracle'
+import { OracleBot } from '@src/module.playground/bot/oracle.bot'
 
 const testing = new PlaygroundTesting()
 
@@ -14,7 +14,7 @@ afterAll(async () => {
 
 describe('oracle bot', () => {
   it('should change oracle price', async () => {
-    const setupOracle = testing.app.get(SetupOracle)
+    const setupOracle = testing.app.get(OracleBot)
     const oracleId = setupOracle.oracleIds[0]
 
     await waitForExpect(async () => {

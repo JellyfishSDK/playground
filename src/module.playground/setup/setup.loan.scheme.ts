@@ -42,7 +42,6 @@ export class SetupLoanScheme extends PlaygroundSetup<CreateLoanScheme> {
 
   async create (each: CreateLoanScheme): Promise<void> {
     await this.client.loan.createLoanScheme(each)
-    await this.generate(1)
   }
 
   async has (each: CreateLoanScheme): Promise<boolean> {

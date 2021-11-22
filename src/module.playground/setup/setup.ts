@@ -1,10 +1,10 @@
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { Injectable, Logger } from '@nestjs/common'
-import { GenesisKeys } from '@defichain/testcontainers'
+import { RegTestFoundationKeys } from '@defichain/jellyfish-network'
 
 @Injectable()
 export abstract class PlaygroundSetup<Each> {
-  static MN_KEY = GenesisKeys[0]
+  static MN_KEY = RegTestFoundationKeys[0]
 
   /**
    * @return {string} address that should be used for everything
@@ -53,6 +53,7 @@ export abstract class PlaygroundSetup<Each> {
    * After creating each, optionally execute something
    */
   protected async after (list: Each[]): Promise<void> {
+    await this.generate(1)
   }
 
   /**

@@ -1,7 +1,9 @@
 import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 import { Injectable } from '@nestjs/common'
 import { AppointOracleOptions, OraclePriceFeed } from '@defichain/jellyfish-api-core/dist/category/oracle'
-import { GenesisKeys } from '@defichain/testcontainers'
+import { OracleBot } from '@src/module.playground/bot/oracle.bot'
+import { RegTestFoundationKeys } from '@defichain/jellyfish-network'
+import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 
 interface OracleSetup {
   address: string
@@ -78,8 +80,12 @@ const FEEDS: OraclePriceFeed[] = [
 
 @Injectable()
 export class SetupOracle extends PlaygroundSetup<OracleSetup> {
-  oracleOwnerAddress: string = GenesisKeys[0].owner.address
-  oracleIds: string[] = []
+  oracleOwnerAddress: string = RegTestFoundationKeys[0].owner.address
+  private readonly oracleIds: string[] = []
+
+  constructor (client: JsonRpcClient, readonly oracleBot: OracleBot) {
+    super(client)
+  }
 
   list (): OracleSetup[] {
     return [
@@ -111,6 +117,12 @@ export class SetupOracle extends PlaygroundSetup<OracleSetup> {
     await this.waitForBalance(101)
     const oracleId = await this.client.oracle.appointOracle(each.address, each.priceFeeds, each.options)
     this.oracleIds.push(oracleId)
+  }
+
+  protected async after (list: OracleSetup[]): Promise<void> {
+    await this.generate(1)
+    this.oracleBot.oracleIds = this.oracleIds
+    await this.oracleBot.run()
     await this.generate(1)
   }
 

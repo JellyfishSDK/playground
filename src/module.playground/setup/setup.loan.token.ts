@@ -38,7 +38,6 @@ export class SetupLoanToken extends PlaygroundSetup<SetLoanToken> {
 
   async create (each: SetLoanToken): Promise<void> {
     await this.client.loan.setLoanToken(each)
-    await this.generate(1)
   }
 
   async has (each: SetLoanToken): Promise<boolean> {
