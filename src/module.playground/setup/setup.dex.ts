@@ -6,7 +6,7 @@ import { BalanceTransferPayload } from '@defichain/jellyfish-api-core/dist/categ
 interface PoolPairSetup {
   symbol: `${string}-${string}`
   create: CreatePoolPairMetadata
-  add: AddPoolLiquiditySource
+  add?: AddPoolLiquiditySource
   utxoToAccount?: BalanceTransferPayload
 }
 
@@ -94,6 +94,56 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
         utxoToAccount: {
           [PlaygroundSetup.address]: '2000@0'
         }
+      },
+      {
+        symbol: 'DUSD-DFI',
+        create: {
+          tokenA: 'DUSD',
+          tokenB: 'DFI',
+          commission: 0.02,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        }
+      },
+      {
+        symbol: 'TU10-DUSD',
+        create: {
+          tokenA: 'TU10',
+          tokenB: 'DUSD',
+          commission: 0.02,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        }
+      },
+      {
+        symbol: 'TD10-DUSD',
+        create: {
+          tokenA: 'TD10',
+          tokenB: 'DUSD',
+          commission: 0.02,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        }
+      },
+      {
+        symbol: 'TS25-DUSD',
+        create: {
+          tokenA: 'TS25',
+          tokenB: 'DUSD',
+          commission: 0.02,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        }
+      },
+      {
+        symbol: 'TR50-DUSD',
+        create: {
+          tokenA: 'TR50',
+          tokenB: 'DUSD',
+          commission: 0.02,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        }
       }
     ]
   }
@@ -109,8 +159,10 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
     await this.client.poolpair.createPoolPair(each.create)
     await this.generate(1)
 
-    await this.client.poolpair.addPoolLiquidity(each.add, PlaygroundSetup.address)
-    await this.generate(1)
+    if (each.add !== undefined) {
+      await this.client.poolpair.addPoolLiquidity(each.add, PlaygroundSetup.address)
+      await this.generate(1)
+    }
   }
 
   async has (each: PoolPairSetup): Promise<boolean> {

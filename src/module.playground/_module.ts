@@ -53,12 +53,12 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     this.setups = [
       utxo,
       token,
-      dex,
       oracle,
       masternode,
       loanScheme,
       loanToken,
-      loanCollateral
+      loanCollateral,
+      dex
     ]
   }
 
