@@ -29,7 +29,7 @@ const PriceDirectionFunctions: Record<PriceDirection, PriceDirectionFunction> = 
   },
   [PriceDirection.RANDOM]: (price: BigNumber, priceChange: BigNumber) => {
     const change = price.times(priceChange)
-    if (BigNumber.random().gt(0.5)) {
+    if (Math.random() > 0.5 || price.lt(1)) {
       return price.plus(change)
     } else {
       return price.minus(change)
@@ -88,13 +88,13 @@ export class OracleBot {
     },
     {
       token: 'CR50',
-      amount: new BigNumber(5000),
+      amount: new BigNumber(1000),
       change: new BigNumber(0.33),
       direction: PriceDirection.RANDOM
     },
     {
       token: 'TR50',
-      amount: new BigNumber(5000),
+      amount: new BigNumber(1000),
       change: new BigNumber(0.33),
       direction: PriceDirection.RANDOM
     },
@@ -156,7 +156,7 @@ export class OracleBot {
     await this.client.oracle.setOracleData(oracleId, time, {
       prices: this.feeds
         .filter(value => {
-          return value.amount.gt(new BigNumber(0)) && value.amount.lt(new BigNumber(1_200_000_000))
+          return value.amount.gt(new BigNumber(0.00000001)) && value.amount.lt(new BigNumber(1_200_000_000))
         })
         .map(v => ({
           tokenAmount: `${v.amount.toFixed(8)}@${v.token}`,
