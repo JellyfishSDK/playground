@@ -8,32 +8,32 @@ export class SetupLoanScheme extends PlaygroundSetup<CreateLoanScheme> {
   list (): CreateLoanScheme[] {
     return [
       {
-        id: '1',
+        id: 'MIN150',
         interestRate: new BigNumber('5'),
         minColRatio: 150
       },
       {
-        id: '2',
+        id: 'MIN175',
         interestRate: new BigNumber('3'),
         minColRatio: 175
       },
       {
-        id: '3',
+        id: 'MIN200',
         interestRate: new BigNumber('2'),
         minColRatio: 200
       },
       {
-        id: '4',
+        id: 'MIN350',
         interestRate: new BigNumber('1.5'),
         minColRatio: 350
       },
       {
-        id: '5',
+        id: 'MIN500',
         interestRate: new BigNumber('1'),
         minColRatio: 500
       },
       {
-        id: '6',
+        id: 'MIN10000',
         interestRate: new BigNumber('0.5'),
         minColRatio: 1000
       }
@@ -42,7 +42,6 @@ export class SetupLoanScheme extends PlaygroundSetup<CreateLoanScheme> {
 
   async create (each: CreateLoanScheme): Promise<void> {
     await this.client.loan.createLoanScheme(each)
-    await this.generate(1)
   }
 
   async has (each: CreateLoanScheme): Promise<boolean> {

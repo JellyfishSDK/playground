@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { BigNumber } from '@defichain/jellyfish-json'
-import { SetupOracle } from '../setup/setup.oracle'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { Interval } from '@nestjs/schedule'
 
@@ -131,14 +130,14 @@ export class OracleBot {
     }
   ]
 
-  constructor (
-    protected readonly client: JsonRpcClient,
-    protected readonly setupOracle: SetupOracle) {
+  public oracleIds: string[] = []
+
+  constructor (readonly client: JsonRpcClient) {
   }
 
   @Interval(5000)
   async run (): Promise<void> {
-    for (const oracleId of this.setupOracle.oracleIds) {
+    for (const oracleId of this.oracleIds) {
       await this.publish(oracleId)
     }
 

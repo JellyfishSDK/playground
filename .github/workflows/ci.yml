@@ -98,10 +98,10 @@ jobs:
         run: docker-compose -f .github/workflows/ci/docker-compose.yml up -d
 
       - name: Wait for :3001/_actuator/probes/liveness
-        run: .github/workflows/ci/wait-for http://localhost:3001/_actuator/probes/liveness -t 120
+        run: .github/workflows/ci/wait-for http://localhost:3001/_actuator/probes/liveness -t 240
 
       - name: Wait for :3002/_actuator/probes/liveness
-        run: .github/workflows/ci/wait-for http://localhost:3002/_actuator/probes/liveness -t 120
+        run: .github/workflows/ci/wait-for http://localhost:3002/_actuator/probes/liveness -t 240
 
       - name: Wait for :8082/ping
         run: .github/workflows/ci/wait-for http://localhost:8082/ping -t 120

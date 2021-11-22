@@ -25,7 +25,6 @@ export class SetupMasternode extends PlaygroundSetup<MasternodeSetup> {
     await this.waitForBalance(20001)
     await this.client.wallet.importPrivKey(each.privKey)
     await this.client.masternode.createMasternode(each.address)
-    await this.generate(1)
   }
 
   async has (each: MasternodeSetup): Promise<boolean> {

@@ -57,7 +57,6 @@ export class SetupLoanCollateral extends PlaygroundSetup<SetCollateralToken> {
 
   async create (each: SetCollateralToken): Promise<void> {
     await this.client.loan.setCollateralToken(each)
-    await this.generate(1)
   }
 
   async has (each: SetCollateralToken): Promise<boolean> {
