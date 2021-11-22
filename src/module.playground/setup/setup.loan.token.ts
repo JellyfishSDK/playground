@@ -15,21 +15,25 @@ export class SetupLoanToken extends PlaygroundSetup<SetLoanToken> {
       },
       {
         symbol: 'TU10',
+        name: 'Decentralized TU10',
         fixedIntervalPriceId: 'TU10/USD',
         interest: new BigNumber('1.0')
       },
       {
         symbol: 'TD10',
+        name: 'Decentralized TD10',
         fixedIntervalPriceId: 'TD10/USD',
         interest: new BigNumber('1.5')
       },
       {
         symbol: 'TS25',
+        name: 'Decentralized TS10',
         fixedIntervalPriceId: 'TS25/USD',
         interest: new BigNumber('2.0')
       },
       {
         symbol: 'TR50',
+        name: 'Decentralized TR50',
         fixedIntervalPriceId: 'TR50/USD',
         interest: new BigNumber('3.0')
       }
