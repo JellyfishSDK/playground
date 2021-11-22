@@ -135,7 +135,7 @@ export class OracleBot {
   constructor (readonly client: JsonRpcClient) {
   }
 
-  @Interval(5000)
+  @Interval(10000)
   async run (): Promise<void> {
     for (const oracleId of this.oracleIds) {
       await this.publish(oracleId)
