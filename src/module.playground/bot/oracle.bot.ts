@@ -29,9 +29,12 @@ const PriceDirectionFunctions: Record<PriceDirection, PriceDirectionFunction> = 
     return price.minus(price.times(priceChange))
   },
   [PriceDirection.RANDOM]: (price: BigNumber, priceChange: BigNumber) => {
-    return BigNumber.random().gt(0.5)
-      ? price.plus(priceChange)
-      : BigNumber.max(price.minus(priceChange), 1)
+    const change = price.times(priceChange)
+    if (BigNumber.random().gt(0.5)) {
+      return price.plus(change)
+    } else {
+      return price.minus(change)
+    }
   },
   [PriceDirection.STABLE]: (price: BigNumber, priceChange: BigNumber) => {
     return price
@@ -87,13 +90,13 @@ export class OracleBot {
     {
       token: 'CR50',
       amount: new BigNumber(5000),
-      change: new BigNumber(50),
+      change: new BigNumber(0.33),
       direction: PriceDirection.RANDOM
     },
     {
       token: 'TR50',
       amount: new BigNumber(5000),
-      change: new BigNumber(50),
+      change: new BigNumber(0.33),
       direction: PriceDirection.RANDOM
     },
     {
