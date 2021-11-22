@@ -8,6 +8,12 @@ export class SetupLoanToken extends PlaygroundSetup<SetLoanToken> {
   list (): SetLoanToken[] {
     return [
       {
+        symbol: 'DUSD',
+        name: 'Decentralized USD',
+        fixedIntervalPriceId: 'DUSD/USD',
+        interest: new BigNumber('0')
+      },
+      {
         symbol: 'TU10',
         fixedIntervalPriceId: 'TU10/USD',
         interest: new BigNumber('1.0')
