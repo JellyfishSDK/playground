@@ -13,6 +13,7 @@ import { OracleBot } from './bot/oracle.bot'
 import { SetupLoanScheme } from '@src/module.playground/setup/setup.loan.scheme'
 import { SetupLoanToken } from '@src/module.playground/setup/setup.loan.token'
 import { SetupLoanCollateral } from '@src/module.playground/setup/setup.loan.collateral'
+import { VaultBot } from '@src/module.playground/bot/vault.bot'
 
 @Global()
 @Module({
@@ -26,6 +27,7 @@ import { SetupLoanCollateral } from '@src/module.playground/setup/setup.loan.col
     SetupLoanToken,
     SetupLoanCollateral,
     OracleBot,
+    VaultBot,
     PlaygroundBlock,
     PlaygroundProbeIndicator
   ],
