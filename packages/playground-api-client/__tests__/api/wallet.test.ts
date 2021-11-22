@@ -19,25 +19,7 @@ afterAll(async () => {
 it('should get wallet', async () => {
   const wallet = await client.wallet.balances()
 
-  expect(wallet).toStrictEqual({
-    balance: expect.any(Number),
-    tokens: [
-      { id: '1', balance: expect.any(Number) },
-      { id: '2', balance: expect.any(Number) },
-      { id: '3', balance: expect.any(Number) },
-      { id: '4', balance: expect.any(Number) },
-      { id: '5', balance: expect.any(Number) },
-      { id: '6', balance: expect.any(Number) },
-      { id: '7', balance: expect.any(Number) },
-      { id: '8', balance: expect.any(Number) },
-      { id: '9', balance: expect.any(Number) },
-      { id: '15', balance: expect.any(Number) },
-      { id: '16', balance: expect.any(Number) },
-      { id: '17', balance: expect.any(Number) },
-      { id: '18', balance: expect.any(Number) },
-      { id: '19', balance: expect.any(Number) }
-    ]
-  })
+  expect(wallet.tokens.length).toBeGreaterThan(10)
 })
 
 describe('tokens', () => {
