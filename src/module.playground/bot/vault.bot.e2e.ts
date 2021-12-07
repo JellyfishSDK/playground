@@ -22,7 +22,7 @@ it('should have a vault', async () => {
   await waitForExpect(async () => {
     const vaults = await testing.jsonRpcClient!.loan.listVaults()
     expect(vaults.length).toBeGreaterThan(0)
-  }, 40000)
+  }, 90000)
 })
 
 it('should have liquidity in DUSD-DFI pool', async () => {
@@ -30,7 +30,23 @@ it('should have liquidity in DUSD-DFI pool', async () => {
     const pairsResult = await testing.jsonRpcClient!.poolpair.getPoolPair('DUSD-DFI')
     expect(Object.values(pairsResult)[0].reserveA.gt(0)).toBeTruthy()
     expect(Object.values(pairsResult)[0].reserveB.gt(0)).toBeTruthy()
-  }, 40000)
+  }, 90000)
+})
+
+it('should have liquidity in TU10-DUSD pool', async () => {
+  await waitForExpect(async () => {
+    const pairsResult = await testing.jsonRpcClient!.poolpair.getPoolPair('TU10-DUSD')
+    expect(Object.values(pairsResult)[0].reserveA.gt(0)).toBeTruthy()
+    expect(Object.values(pairsResult)[0].reserveB.gt(0)).toBeTruthy()
+  }, 90000)
+})
+
+it('should have liquidity in TD10-DUSD pool', async () => {
+  await waitForExpect(async () => {
+    const pairsResult = await testing.jsonRpcClient!.poolpair.getPoolPair('TD10-DUSD')
+    expect(Object.values(pairsResult)[0].reserveA.gt(0)).toBeTruthy()
+    expect(Object.values(pairsResult)[0].reserveB.gt(0)).toBeTruthy()
+  }, 90000)
 })
 
 it('should have liquidity in TS25-DUSD pool', async () => {
@@ -38,5 +54,13 @@ it('should have liquidity in TS25-DUSD pool', async () => {
     const pairsResult = await testing.jsonRpcClient!.poolpair.getPoolPair('TS25-DUSD')
     expect(Object.values(pairsResult)[0].reserveA.gt(0)).toBeTruthy()
     expect(Object.values(pairsResult)[0].reserveB.gt(0)).toBeTruthy()
-  }, 40000)
+  }, 90000)
+})
+
+it('should have liquidity in TR50-DUSD pool', async () => {
+  await waitForExpect(async () => {
+    const pairsResult = await testing.jsonRpcClient!.poolpair.getPoolPair('TR50-DUSD')
+    expect(Object.values(pairsResult)[0].reserveA.gt(0)).toBeTruthy()
+    expect(Object.values(pairsResult)[0].reserveB.gt(0)).toBeTruthy()
+  }, 90000)
 })
