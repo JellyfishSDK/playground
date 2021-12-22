@@ -107,6 +107,6 @@ jobs:
         run: .github/workflows/ci/wait-for http://localhost:8082/ping -t 120
 
       - name: Sanity testing
-        uses: matt-ball/newman-action@0659e9b8d056c0d03d94e1dbfce380512088b566
+        uses: matt-ball/newman-action@64419a64bd84915e081828373fb872be6def2712
         with:
           collection: .github/workflows/ci/postman_collection.json
