@@ -13,6 +13,11 @@ export class SetupLoanCollateral extends PlaygroundSetup<SetCollateralToken> {
         factor: new BigNumber('1')
       },
       {
+        token: 'DUSD',
+        fixedIntervalPriceId: 'DUSD/USD',
+        factor: new BigNumber('1')
+      },
+      {
         token: 'BTC',
         fixedIntervalPriceId: 'BTC/USD',
         factor: new BigNumber('1')
