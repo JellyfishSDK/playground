@@ -52,5 +52,16 @@ it('should have loan tokens', async () => {
 
 it('should have loan collateral tokens', async () => {
   const results = await testing.client.loan.listCollateralTokens()
-  expect(results.length).toBe(9)
+  expect(results.length).toBe(10)
+})
+
+it('should have gov set', async () => {
+  const dusdInfo = await testing.client.token.getToken('DUSD')
+  const dusdId = Object.keys(dusdInfo)[0]
+  const gov = await testing.client.masternode.getGov('ATTRIBUTES')
+  expect(gov).toStrictEqual({
+    ATTRIBUTES: {
+      [`v0/token/${dusdId}/payback_dfi`]: 'true'
+    }
+  })
 })

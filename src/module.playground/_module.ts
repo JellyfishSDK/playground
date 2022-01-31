@@ -13,6 +13,7 @@ import { OracleBot } from './bot/oracle.bot'
 import { SetupLoanScheme } from '@src/module.playground/setup/setup.loan.scheme'
 import { SetupLoanToken } from '@src/module.playground/setup/setup.loan.token'
 import { SetupLoanCollateral } from '@src/module.playground/setup/setup.loan.collateral'
+import { SetupGov } from '@src/module.playground/setup/setup.gov'
 import { VaultBot } from '@src/module.playground/bot/vault.bot'
 
 @Global()
@@ -26,6 +27,7 @@ import { VaultBot } from '@src/module.playground/bot/vault.bot'
     SetupLoanScheme,
     SetupLoanToken,
     SetupLoanCollateral,
+    SetupGov,
     OracleBot,
     VaultBot,
     PlaygroundBlock,
@@ -50,7 +52,8 @@ export class PlaygroundModule implements OnApplicationBootstrap {
     masternode: SetupMasternode,
     loanScheme: SetupLoanScheme,
     loanToken: SetupLoanToken,
-    loanCollateral: SetupLoanCollateral
+    loanCollateral: SetupLoanCollateral,
+    gov: SetupGov
   ) {
     this.setups = [
       utxo,
@@ -60,7 +63,8 @@ export class PlaygroundModule implements OnApplicationBootstrap {
       loanScheme,
       loanToken,
       loanCollateral,
-      dex
+      dex,
+      gov
     ]
   }
 
