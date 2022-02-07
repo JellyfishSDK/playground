@@ -5,6 +5,7 @@ import { PlaygroundApiResponse, ApiPagedResponse } from './playground.api.respon
 import { Rpc } from './api/rpc'
 import { Playground } from './api/playground'
 import { Wallet } from './api/wallet'
+import { Dex } from './api/dex'
 
 /**
  * PlaygroundApiClient Options
@@ -47,6 +48,7 @@ export class PlaygroundApiClient {
   public readonly rpc = new Rpc(this)
   public readonly playground = new Playground(this)
   public readonly wallet = new Wallet(this)
+  public readonly dex = new Dex(this)
 
   constructor (
     private readonly options: PlaygroundApiClientOptions
@@ -140,7 +142,7 @@ export class PlaygroundApiClient {
       const response = await _fetch(method, url, controller, body)
       clearTimeout(id)
       return response
-    } catch (err) {
+    } catch (err: any) {
       if (err.type === 'aborted') {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         throw new PlaygroundClientTimeoutException(timeout!)
