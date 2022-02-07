@@ -16,12 +16,6 @@ beforeAll(async () => {
   await testing.token.dfi({ amount: 5000, address: pocketAddr })
   await testing.generate(1)
 
-  // fund utxo
-  for (let i = 0; i < 2; i += 1) {
-    await testing.container.call('sendtoaddress', [pocketAddr, 1])
-    await testing.generate(1)
-  }
-
   await testing.token.create({ symbol: 'CAT', collateralAddress: pocketAddr })
   await testing.generate(1)
 
@@ -37,6 +31,10 @@ beforeAll(async () => {
     address: pocketAddr
   })
   await testing.generate(1)
+
+  // fund utxo
+  await testing.container.call('sendtoaddress', [pocketAddr, 1])
+  await testing.generate(1)
 })
 
 afterAll(async () => {
@@ -45,21 +43,22 @@ afterAll(async () => {
 
 describe('add', () => {
   it('should add pool liquidity', async () => {
-    const before = await client.rpc.call('getpoolpair', ['CAT-DFI'], 'number')
-    console.log('before: ', before)
+    const before: any = await client.rpc.call('getpoolpair', ['CAT-DFI'], 'number')
+    const idBefore = Object.keys(before)[0]
+    expect(before[idBefore].reserveA).toStrictEqual(250)
+    expect(before[idBefore].reserveB).toStrictEqual(100)
 
-    try {
-      await client.dex.add({
-        fromAddress: pocketAddr,
-        a: { id: 1, amount: 50 },
-        b: { id: 0, amount: 10 },
-        shareAddress: pocketAddr
-      })
+    const res = await client.dex.add({
+      fromAddress: pocketAddr,
+      a: { id: 1, amount: 50 },
+      b: { id: 0, amount: 10 },
+      shareAddress: pocketAddr
+    })
+    console.log('res: ', res)
 
-      const after = await client.rpc.call('getpoolpair', ['CAT-DFI'], 'number')
-      console.log('after: ', after)
-    } catch (err) {
-      console.log('err: ', err)
-    }
+    const after: any = await client.rpc.call('getpoolpair', ['CAT-DFI'], 'number')
+    const idAfter = Object.keys(after)[0]
+    expect(before[idAfter].reserveA).toStrictEqual(300)
+    expect(before[idAfter].reserveB).toStrictEqual(110)
   })
 })

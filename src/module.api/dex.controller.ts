@@ -1,14 +1,16 @@
-import { DecodedAddress, fromAddress } from '@defichain/jellyfish-address'
+import { fromAddress } from '@defichain/jellyfish-address'
 import { JsonRpcClient } from '@defichain/jellyfish-api-jsonrpc'
 import { CTransactionSegWit, DeFiTransactionConstants, OP_CODES, Transaction, TransactionSegWit, Vout, Vin } from '@defichain/jellyfish-transaction'
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post, NotFoundException } from '@nestjs/common'
 import BigNumber from 'bignumber.js'
 import { waitForCondition } from '@defichain/testcontainers/dist/utils'
 import { AddPoolLiquidity } from '@playground-api-client/api/dex'
 import { SignInputOption, TransactionSigner } from '@defichain/jellyfish-transaction-signature'
 import { UTXO } from '@defichain/jellyfish-api-core/dist/category/wallet'
 import { HASH160, WIF } from '@defichain/jellyfish-crypto'
-import { Prevout } from '@defichain/jellyfish-transaction-builder/dist'
+import { Prevout } from '@defichain/jellyfish-transaction-builder'
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 @Controller('/v0/playground/dex')
 export class DexController {
@@ -19,7 +21,7 @@ export class DexController {
   async add (@Body() data: AddPoolLiquidity): Promise<string> {
     const utxo = await this.getUtxo(data.fromAddress)
     if (utxo === undefined) {
-      throw new Error('utxo not found')
+      throw new NotFoundException('utxo not found')
     }
     const defiTx = createAddPoolLiqTx(data, utxo)
 
@@ -33,15 +35,13 @@ export class DexController {
       sign: async (hash: Buffer) => await keyPair.sign(hash)
     }
 
-    const tx: TransactionSegWit = await TransactionSigner.sign(defiTx, [inputOpt])
-    console.log('tx: ', tx)
-    const hex = new CTransactionSegWit(tx).toHex()
+    const acc = await this.client.call('getaccount', [data.fromAddress], 'number')
+    console.log('acc: ', acc)
 
-    const fundOptions = { lockUnspents: true, changePosition: 1 }
-    const { hex: funded } = await this.client.call('fundrawtransaction', [hex, fundOptions], 'number')
-    const { hex: signed } = await this.client.call('signrawtransactionwithwallet', [funded], 'number')
-    const txid = await this.client.rawtx.sendRawTransaction(signed)
-    console.log('txid: ', txid)
+    const tx: TransactionSegWit = await TransactionSigner.sign(defiTx, [inputOpt])
+    const hex = new CTransactionSegWit(tx).toHex()
+    const txid = await this.client.rawtx.sendRawTransaction(hex)
+
     await this.waitConfirmation(txid)
     return txid
   }
@@ -50,7 +50,7 @@ export class DexController {
     const utxos: UTXO[] = await this.client.wallet.listUnspent(
       1, 9999999, { addresses: [addr], includeUnsafe: true }
     )
-    console.log('utxos: ', utxos, utxos.length, utxos[utxos.length - 1].amount.toNumber())
+    console.log('utxos: ', utxos, utxos.length)
     return utxos.find(utxo => utxo.amount.gte(0.001))
   }
 
@@ -78,9 +78,6 @@ function mapPrevout (utxo: UTXO, pubKey: Buffer): Prevout {
 }
 
 function createAddPoolLiqTx (data: AddPoolLiquidity, utxo: UTXO): Transaction {
-  const decodedFromAddr = fromAddress(data.fromAddress, 'regtest') as DecodedAddress
-  const decodedShareAddr = fromAddress(data.shareAddress, 'regtest') as DecodedAddress
-
   const addPoolLiquidity: Vout = {
     value: new BigNumber(0.001),
     script: {
@@ -88,7 +85,7 @@ function createAddPoolLiqTx (data: AddPoolLiquidity, utxo: UTXO): Transaction {
         OP_CODES.OP_RETURN,
         OP_CODES.OP_DEFI_TX_POOL_ADD_LIQUIDITY({
           from: [{
-            script: decodedFromAddr.script,
+            script: fromAddress(data.fromAddress, 'regtest')!.script,
             balances: [{
               token: data.a.id,
               amount: new BigNumber(data.a.amount)
@@ -97,7 +94,7 @@ function createAddPoolLiqTx (data: AddPoolLiquidity, utxo: UTXO): Transaction {
               amount: new BigNumber(data.b.amount)
             }]
           }],
-          shareAddress: decodedShareAddr.script
+          shareAddress: fromAddress(data.shareAddress, 'regtest')!.script
         })
       ]
     },

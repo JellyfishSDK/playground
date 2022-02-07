@@ -5,9 +5,16 @@ export class Dex {
   }
 
   /**
-   * @return {Promise<WalletBalances>} of playground
+   * @param {AddPoolLiquidity} data
+   * @param {string} data.fromAddress
+   * @param {number} data.a.id
+   * @param {number} data.a.number
+   * @param {number} data.b.id
+   * @param {number} data.b.number
+   * @param {string} data.shareAddress
+   * @return {Promise<string>} txid
    */
-  async add (data: AddPoolLiquidity): Promise<any> {
+  async add (data: AddPoolLiquidity): Promise<string> {
     return await this.client.requestData('POST', 'dex/add', data)
   }
 }
