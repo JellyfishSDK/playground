@@ -12,12 +12,12 @@ afterAll(async () => {
 
 it('should have pool pairs setup', async () => {
   const pairs = await testing.client.poolpair.listPoolPairs()
-  expect(Object.values(pairs).length).toBe(10)
+  expect(Object.values(pairs).length).toBe(11)
 })
 
 it('should have tokens setup', async () => {
   const tokens = await testing.client.token.listTokens()
-  expect(Object.values(tokens).length).toBe(25)
+  expect(Object.values(tokens).length).toBe(27)
 })
 
 it('should have oracles setup', async () => {
@@ -52,7 +52,7 @@ it('should have loan tokens', async () => {
 
 it('should have loan collateral tokens', async () => {
   const results = await testing.client.loan.listCollateralTokens()
-  expect(results.length).toBe(10)
+  expect(results.length).toBe(11)
 })
 
 it('should have gov set', async () => {
