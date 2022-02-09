@@ -2,6 +2,7 @@ import { PlaygroundSetup } from '@src/module.playground/setup/setup'
 import { Injectable } from '@nestjs/common'
 import { AddPoolLiquiditySource, CreatePoolPairMetadata } from '@defichain/jellyfish-api-core/dist/category/poolpair'
 import { BalanceTransferPayload } from '@defichain/jellyfish-api-core/dist/category/account'
+import BigNumber from 'bignumber.js'
 
 interface PoolPairSetup {
   symbol: `${string}-${string}`
@@ -144,6 +145,16 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
           status: true,
           ownerAddress: PlaygroundSetup.address
         }
+      },
+      {
+        symbol: 'ZERO-DFI',
+        create: {
+          tokenA: 'ZERO',
+          tokenB: 'DFI',
+          commission: 0,
+          status: true,
+          ownerAddress: PlaygroundSetup.address
+        }
       }
     ]
   }
@@ -177,12 +188,19 @@ export class SetupDex extends PlaygroundSetup<PoolPairSetup> {
   async after (list: PoolPairSetup[]): Promise<void> {
     const poolPairs = await this.client.poolpair.listPoolPairs()
     const poolPairIds = Object.keys(poolPairs)
-    const splits = 1 / poolPairIds.length
+
+    // toFixed(8) due to 1 / 11 = 0.09090909090909091 which is invalid amount on setgov
+    const splits = Number(new BigNumber(1 / poolPairIds.length).toFixed(8))
 
     const lpSplits: any = {}
     for (const k in poolPairs) {
       lpSplits[parseInt(k)] = splits
     }
+
+    // to fix: LP_SPLITS: total = 99999999 vs expected 100000000', code: -32600, method: setgov
+    // 0.09090909 * 11 !== 100000000
+    const lstKey = Object.keys(lpSplits)[0]
+    lpSplits[lstKey] = Number(new BigNumber(lpSplits[lstKey]).plus(0.00000001).toFixed(8))
 
     await this.client.masternode.setGov({ LP_SPLITS: lpSplits })
     await this.generate(1)
