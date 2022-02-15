@@ -46,7 +46,7 @@
     "defichain": "^2.18.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.5.3"
+    "rxjs": "^7.5.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.0",
