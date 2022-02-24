@@ -120,6 +120,17 @@ export class SetupToken extends PlaygroundSetup<TokenSetup> {
           collateralAddress: PlaygroundSetup.address
         },
         amount: 100000000
+      },
+      {
+        create: {
+          symbol: 'OFF',
+          name: 'Playground OFF',
+          isDAT: true,
+          mintable: true,
+          tradeable: false,
+          collateralAddress: PlaygroundSetup.address
+        },
+        amount: 100000000
       }
     ]
   }
