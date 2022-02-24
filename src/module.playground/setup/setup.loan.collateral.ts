@@ -61,6 +61,11 @@ export class SetupLoanCollateral extends PlaygroundSetup<SetCollateralToken> {
         token: 'ZERO',
         fixedIntervalPriceId: 'ZERO/USD',
         factor: new BigNumber('1')
+      },
+      {
+        token: 'OFF',
+        fixedIntervalPriceId: 'OFF/USD',
+        factor: new BigNumber('1')
       }
     ]
   }
