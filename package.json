@@ -37,7 +37,7 @@
     "@nestjs/common": "^8.3.1",
     "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.3.1",
-    "@nestjs/platform-fastify": "^8.3.1",
+    "@nestjs/platform-fastify": "^8.4.0",
     "@nestjs/schedule": "^1.0.2",
     "@nestjs/terminus": "^8.0.4",
     "bignumber.js": "^9.0.2",
