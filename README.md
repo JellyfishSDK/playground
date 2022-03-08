@@ -1,3 +1,9 @@
+# Deprecated
+
+Following the migration path outline in [DeFiCh#580](https://github.com/DeFiCh/jellyfish/issues/580), this repository has been conslidated into [DeFiCh/jellyfish/apps/playground](https://github.com/DeFiCh/jellyfish/tree/main/apps/playground-api).
+
+---
+
 [![CI](https://github.com/DeFiCh/playground/actions/workflows/ci.yml/badge.svg)](https://github.com/DeFiCh/playground/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/DeFiCh/playground/branch/main/graph/badge.svg?token=kBCC9qSRrA)](https://codecov.io/gh/DeFiCh/playground)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c206ba9a4fdf0699229c/maintainability)](https://codeclimate.com/github/DeFiCh/playground/maintainability)
